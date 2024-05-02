@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global Style */
+.desktop-only {
+      @apply sr-only md:not-sr-only;
+}

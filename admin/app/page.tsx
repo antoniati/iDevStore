@@ -1,13 +1,9 @@
-import { Card, Flex, Title } from "@tremor/react";
+import { HeaderLandigPage } from "@/components/headers/HeaderLandigPage";
 
 export default function Home() {
   return (
-    <Flex>
-      <Card>
-        <Title>
-          Hello World
-        </Title>
-      </Card>
-    </Flex>
+    <>
+      <HeaderLandigPage />
+    </>
   );
 };

@@ -2,8 +2,9 @@
 
 import * as z from "zod";
 import bcrypt from "bcryptjs";
-import { db } from "@/libs/db";
+import { db, sendVerificationEmail } from "@/libs";
 import { UserRegisterSchema } from "@/schemas";
+import { generateVerificationToken, getUserByEmail } from "@/actions";
 
 export const registerUser = async (values: z.infer<typeof UserRegisterSchema>) => {
       const validatedFields = UserRegisterSchema.safeParse(values);
@@ -18,6 +19,9 @@ export const registerUser = async (values: z.infer<typeof UserRegisterSchema>) =
       } = validatedFields.data;
 
       const hashedPassword = await bcrypt.hash(password, 10);
+      const existingUser = await getUserByEmail(email);
+
+      if (existingUser) return { error: "This email is already in use. Please try a different email." };
 
       await db.user.create({
             data: {
@@ -28,7 +32,12 @@ export const registerUser = async (values: z.infer<typeof UserRegisterSchema>) =
             },
       });
 
-      // TODO: Send confirmation email with token.
+      const verificationToken = await generateVerificationToken(email);
+
+      await sendVerificationEmail(
+            verificationToken.email,
+            verificationToken.token,
+      );
 
       return { success: "An account confirmation email has been sent. Please check your inbox to complete your registration." };
 };

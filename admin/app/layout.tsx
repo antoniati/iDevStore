@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { HeaderLandigPage } from "@/components/headers/HeaderLandigPage";
+import { MainFooter } from "@/components/footers/MainFooter";
 import { cn } from "@/libs/tw-merge";
 import "./globals.css";
 
@@ -14,7 +16,9 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
     <html lang="en">
       <body className={cn(inter.className, "bg-white text-slate-800")}>
+        <HeaderLandigPage />
         {children}
+        <MainFooter />
       </body>
     </html>
   );

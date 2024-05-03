@@ -4,3 +4,9 @@ export interface TechIconProps {
       iconUrl: string;
       documentationUrl: string;
 };
+
+export interface WrapperFormProps {
+      titleForm: string;
+      descriptionForm: string;
+      children: React.ReactNode;
+};

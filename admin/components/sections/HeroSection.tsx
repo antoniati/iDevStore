@@ -2,12 +2,9 @@
 
 import { BsGithub } from "react-icons/bs";
 import { Button, Flex, Metric, Title } from "@tremor/react";
+import Link from "next/link";
 
 export const HeroSection = () => {
-      const openInNewTab = (url: string) => {
-            window.open(url, "_blank", "noopener,noreferrer");
-      };
-
       return (
             <section className="heroSection">
                   <Metric>
@@ -20,12 +17,8 @@ export const HeroSection = () => {
                         <Button>
                               Sign In
                         </Button>
-                        <Button
-                              icon={BsGithub}
-                              variant="secondary"
-                              onClick={() => openInNewTab("https://github.com/antoniati/iDevStore")}
-                        >
-                              Repo
+                        <Button variant="secondary" >
+                              <Link href={"/auth/register"}> Register </Link>
                         </Button>
                   </Flex>
             </section>

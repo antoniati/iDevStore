@@ -2,7 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Scrollbar Styles */
+@layer base {
+      ::-webkit-scrollbar {
+            @apply w-2 h-2;
+      }
+
+      ::-webkit-scrollbar-track {
+            @apply bg-slate-100 rounded-full;
+      }
+
+      ::-webkit-scrollbar-thumb {
+            @apply bg-slate-400 rounded-full;
+      }
+}
+
 /* Global Style */
 .desktop-only {
       @apply sr-only md:not-sr-only;
+}
+
+.mainContainer {
+      @apply flex flex-col items-start px-[100px] transition-all duration-300;
+}
+
+/* Hero Section */
+.heroSection {
+      @apply w-full flex flex-col items-center justify-center space-y-4 p-4 text-center bg-slate-50 pt-[100px];
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+
+      /* Global Styles */
+      .mainContainer {
+            @apply px-5;
+      }
+
+      /* Hero Section  */
+      .heroSection {
+            @apply py-[50px];
+      }
+
+}
+
+@media (max-width: 600px) {
+
+      /* Global Styles */
+      .mainContainer {
+            @apply w-full p-2;
+      }
+
+      /* Hero Section */
+      .heroSection {
+            @apply pt-[50px] pb-0;
+      }
 }

@@ -7,17 +7,13 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "iDevStore",
-  description: "SAAS de Gestão de E-commerce",
+  description: "Everything you need to manage your store",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <html lang="pt-BR">
-      <body className={cn(inter.className, "text-slate-800")}>
+    <html lang="en">
+      <body className={cn(inter.className, "bg-white text-slate-800")}>
         {children}
       </body>
     </html>

@@ -28,7 +28,12 @@
 
 /* Hero Section */
 .heroSection {
-      @apply w-full flex flex-col items-center justify-center space-y-4 p-4 text-center bg-slate-50 pt-[100px];
+      @apply w-full flex flex-col items-center justify-center space-y-4 text-center bg-slate-50 py-[100px];
+}
+
+/* Tech Section */
+.techSection {
+      @apply w-full bg-slate-50 py-[100px];
 }
 
 /* Responsive Styles */
@@ -39,8 +44,9 @@
             @apply px-5;
       }
 
-      /* Hero Section  */
-      .heroSection {
+      /* Hero Section and Tech Section */
+      .heroSection,
+      .techSection {
             @apply py-[50px];
       }
 
@@ -53,8 +59,13 @@
             @apply w-full p-2;
       }
 
-      /* Hero Section */
+      /* Hero Section and Tech Section */
       .heroSection {
             @apply pt-[50px] pb-0;
       }
+
+      .techSection {
+            @apply py-[20px];
+      }
+
 }

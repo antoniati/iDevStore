@@ -1,12 +1,13 @@
-import { Button, Flex } from "@tremor/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button, Flex } from "@tremor/react";
 import { BsGithub, BsInfoCircle } from "react-icons/bs";
+import { cn } from "@/libs/tw-merge";
 
 export const HeaderLandigPage = () => {
       return (
-            <header className="w-full shadow-tremor-card p-4">
-                  <Flex>
+            <header className={cn("mainContainer", "bg-white p-4 border-b-4 border-slate-100")}>
+                  <Flex >
                         <Flex className="w-1/2 justify-start space-x-2">
                               <Image
                                     alt="Logotipo iDevStore"
@@ -14,40 +15,40 @@ export const HeaderLandigPage = () => {
                                     width={26}
                                     height={26}
                               />
-                              <h2 className="font-bold">iDevStore</h2>
+                              <h2 className={"font-bold"}>iDevStore</h2>
                         </Flex>
 
-                        <Flex className="w-1/2 space-x-6">
-                              <Flex className="space-x-4 justify-end">
+                        <Flex className="w-1/2 justify-end space-x-4">
+                              <Flex className={"space-x-4 justify-end"}>
                                     <Link
                                           href={"/suporte"}
                                           className="flex items-center space-x-2 text-tremor-default"
                                     >
                                           <BsInfoCircle size={22} />
-                                          <span className="desktop-only">
-                                                FAQ
-                                          </span>
+                                          <span className="desktop-only"> FAQ </span>
                                     </Link>
                                     <Link
                                           href={"https://github.com/antoniati/iDevStore"}
                                           className="flex items-center space-x-2 text-tremor-default"
+                                          target="_blank"
+                                          rel="noopener noreferrer"
                                     >
                                           <BsGithub size={22} />
-                                          <span className="desktop-only">
-                                                Repositorio
-                                          </span>
+                                          <span className="desktop-only"> Repo </span>
                                     </Link>
                               </Flex>
 
-                              <span style={{
-                                    height: "40px",
-                                    padding: "2px",
-                                    backgroundColor: "#E2E8F0",
-                                    borderRadius: "15%"
-                              }}></span>
+                              <span
+                                    style={{
+                                          height: "40px",
+                                          padding: "1px",
+                                          backgroundColor: "#E2E8F0",
+                                          borderRadius: "15%"
+                                    }}
+                              ></span>
 
-                              <Button>
-                                    Faça o Login
+                              <Button size="xs">
+                                    Sign In
                               </Button>
                         </Flex>
                   </Flex>

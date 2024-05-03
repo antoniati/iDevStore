@@ -8,6 +8,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { SyncLoading, WrapperForm } from "@/components";
 import { LoginSchema } from "@/schemas";
+import { useRouter } from "next/navigation";
 
 export const UserLoginForm = () => {
       const [error, setError] = useState<string>("");
@@ -34,6 +35,8 @@ export const UserLoginForm = () => {
             setSuccess("");
             setError("");
       };
+
+      const router = useRouter();
 
       return (
             <WrapperForm
@@ -66,6 +69,20 @@ export const UserLoginForm = () => {
                                     disabled={isPending}
                                     autoComplete={"off"}
                               />
+
+                              {!isPending && (
+                                    <Button
+                                          type={"button"}
+                                          size={"xs"}
+                                          variant={"light"}
+                                          onClick={() => router.push("/auth/reset")}
+                                          className={"ml-1"}
+                                    >
+                                          <span className={"text-tremor-label"}>
+                                                Forgot Password ?
+                                          </span>
+                                    </Button>
+                              )}
                         </Flex>
 
                         <Divider />

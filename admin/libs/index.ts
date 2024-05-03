@@ -1,7 +1,8 @@
 import { db } from "@/libs/db";
-import { sendVerificationEmail } from "@/libs/mail";
+import { sendVerificationEmail, sendPasswordResetEmail } from "@/libs/mail";
 
 export {
       db,
       sendVerificationEmail,
-}
+      sendPasswordResetEmail
+};

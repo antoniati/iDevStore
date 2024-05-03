@@ -12,3 +12,12 @@ export const LoginSchema = z.object({
       email: z.string().email({ message: "email field is required" }),
       password: z.string().min(1, { message: "password is required" }),
 });
+
+
+export const NewPasswordSchema = z.object({
+      password: z.string().min(6, { message: "choose a minimum of 6 characters for password" }),
+});
+
+export const ResetSchema = z.object({
+      email: z.string().email({ message: "email field is required" }),
+});

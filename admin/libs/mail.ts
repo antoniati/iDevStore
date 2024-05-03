@@ -14,3 +14,14 @@ export const sendVerificationEmail = async (email: string, token: string) => {
             html: `<p>Click confirm account to complete your account registration: <a href="${confirmLink}">CONFIRM ACCOUNT</a></p>`
       });
 };
+
+export const sendPasswordResetEmail = async (email: string, token: string,) => {
+      const resetLink = `${domain}/auth/new-password?token=${token}`
+
+      await resend.emails.send({
+            from: "onboarding@resend.dev",
+            to: email,
+            subject: "Password Reset - iDevStore",
+            html: `<p>Click reset password to create a new password: <a href="${resetLink}">RESET PASSWORD</a></p>`
+      });
+};

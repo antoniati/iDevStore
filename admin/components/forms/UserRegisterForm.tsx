@@ -10,6 +10,7 @@ import { Button, Callout, Divider, Flex, Text, TextInput } from "@tremor/react"
 import { SyncLoading, WrapperForm } from "@/components";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { registerUser } from "@/actions";
 
 export const UserRegisterForm = () => {
       const [error, setError] = useState<string>("");
@@ -30,7 +31,21 @@ export const UserRegisterForm = () => {
 
       const onSubmit = (values: z.infer<typeof UserRegisterSchema>) => {
             startTransition(() => {
-                  console.log(values)
+                  startTransition(() => {
+                        registerUser(values)
+                              .then((data) => {
+                                    if (data.error) {
+                                          setError(data.error)
+                                    };
+
+                                    if (data.success) {
+                                          setSuccess(data.success)
+                                    };
+                              })
+                              .catch(() =>
+                                    setError("An internal server error has occurred.")
+                              );
+                  });
             });
       };
 
@@ -42,63 +57,64 @@ export const UserRegisterForm = () => {
 
       return (
             <WrapperForm
-                  titleForm={"Create an account"}
-                  descriptionForm={"Fill out the form below to create an account"}
+                  titleForm={!success ? "Create an account" : "Email successfully sent"}
+                  descriptionForm={!success ? "Fill out the form below to create an account" : ""}
             >
                   <form
                         className={"w-full space-y-4"}
                         onSubmit={form.handleSubmit(onSubmit)}
                         onChange={cleanMessages}
                   >
-                        <Flex className={"flex-col space-y-4 items-start"}>
-                              <TextInput
-                                    type={"text"}
-                                    name={"firstName"}
-                                    placeholder={"First Name"}
-                                    onChange={(e) => form.setValue("firstName", e.target.value)}
-                                    error={form.formState.errors.firstName ? (true) : (false)}
-                                    errorMessage={form.formState.errors.firstName?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
-                              <TextInput
-                                    type={"text"}
-                                    name={"lastName"}
-                                    placeholder={"Last Name"}
-                                    onChange={(e) => form.setValue("lastName", e.target.value)}
-                                    error={form.formState.errors.lastName ? (true) : (false)}
-                                    errorMessage={form.formState.errors.lastName?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
-                              <TextInput
-                                    type={"email"}
-                                    name={"email"}
-                                    placeholder={"Your E-mail"}
-                                    onChange={(e) => form.setValue("email", e.target.value)}
-                                    error={form.formState.errors.email ? (true) : (false)}
-                                    errorMessage={form.formState.errors.email?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
-                              <PhoneInput
-                                    country={'us'}
-                                    value={form.watch('phone')}
-                                    onChange={(phone) => form.setValue('phone', phone)}
-                                    inputStyle={{ width: '100%', }}
-                              />
-                              <TextInput
-                                    type={"password"}
-                                    name={"password"}
-                                    placeholder={"Password"}
-                                    onChange={(e) => form.setValue("password", e.target.value)}
-                                    error={form.formState.errors.password ? (true) : (false)}
-                                    errorMessage={form.formState.errors.password?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
-                        </Flex>
-
+                        {!success && (
+                              <Flex className={"flex-col space-y-4 items-start"}>
+                                    <TextInput
+                                          type={"text"}
+                                          name={"firstName"}
+                                          placeholder={"First Name"}
+                                          onChange={(e) => form.setValue("firstName", e.target.value)}
+                                          error={form.formState.errors.firstName ? (true) : (false)}
+                                          errorMessage={form.formState.errors.firstName?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+                                    <TextInput
+                                          type={"text"}
+                                          name={"lastName"}
+                                          placeholder={"Last Name"}
+                                          onChange={(e) => form.setValue("lastName", e.target.value)}
+                                          error={form.formState.errors.lastName ? (true) : (false)}
+                                          errorMessage={form.formState.errors.lastName?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+                                    <TextInput
+                                          type={"email"}
+                                          name={"email"}
+                                          placeholder={"Your Email"}
+                                          onChange={(e) => form.setValue("email", e.target.value)}
+                                          error={form.formState.errors.email ? (true) : (false)}
+                                          errorMessage={form.formState.errors.email?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+                                    <PhoneInput
+                                          country={'us'}
+                                          value={form.watch('phone')}
+                                          onChange={(phone) => form.setValue('phone', phone)}
+                                          inputStyle={{ width: '100%', }}
+                                    />
+                                    <TextInput
+                                          type={"password"}
+                                          name={"password"}
+                                          placeholder={"Password"}
+                                          onChange={(e) => form.setValue("password", e.target.value)}
+                                          error={form.formState.errors.password ? (true) : (false)}
+                                          errorMessage={form.formState.errors.password?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+                              </Flex>
+                        )}
                         <Divider />
 
                         <Flex flexDirection={"col"} >
@@ -108,13 +124,13 @@ export const UserRegisterForm = () => {
                                     <Callout
                                           className={"w-full"}
                                           title={error}
-                                          color={"red"}
+                                          color={"rose-500"}
                                     />
                               ) : success ? (
                                     <Callout
                                           className={"w-full"}
                                           title={success}
-                                          color={"rose-500"}
+                                          color={"teal"}
                                     />
                               ) : (
                                     <Flex className={"flex-col space-y-4"}>
@@ -132,7 +148,6 @@ export const UserRegisterForm = () => {
                                     </Flex>
                               )}
                         </Flex>
-
                   </form>
 
                   <div className="text-center flex flex-col sm:flex-row p-4" style={{ gap: '5px' }}>

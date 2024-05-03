@@ -3,32 +3,27 @@
 import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Callout, Divider, Flex, Text, TextInput } from "@tremor/react"
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { UserRegisterSchema } from "@/schemas";
-import { Button, Callout, Divider, Flex, Text, TextInput } from "@tremor/react"
 import { SyncLoading, WrapperForm } from "@/components";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import { LoginSchema } from "@/schemas";
 
-export const UserRegisterForm = () => {
+export const UserLoginForm = () => {
       const [error, setError] = useState<string>("");
       const [success, setSuccess] = useState<string>("");
 
       const [isPending, startTransition] = useTransition();
 
-      const form = useForm<z.infer<typeof UserRegisterSchema>>({
-            resolver: zodResolver(UserRegisterSchema),
+      const form = useForm<z.infer<typeof LoginSchema>>({
+            resolver: zodResolver(LoginSchema),
             defaultValues: {
-                  firstName: "",
-                  lastName: "",
                   email: "",
-                  phone: "",
                   password: ""
             },
       });
 
-      const onSubmit = (values: z.infer<typeof UserRegisterSchema>) => {
+      const onSubmit = (values: z.infer<typeof LoginSchema>) => {
             startTransition(() => {
                   console.log(values)
             });
@@ -42,8 +37,8 @@ export const UserRegisterForm = () => {
 
       return (
             <WrapperForm
-                  titleForm={"Create an account"}
-                  descriptionForm={"Fill out the form below to create an account"}
+                  titleForm={"Welcome Back"}
+                  descriptionForm={"Sign in to your account and enjoy an improved management experience."}
             >
                   <form
                         className={"w-full space-y-4"}
@@ -51,26 +46,6 @@ export const UserRegisterForm = () => {
                         onChange={cleanMessages}
                   >
                         <Flex className={"flex-col space-y-4 items-start"}>
-                              <TextInput
-                                    type={"text"}
-                                    name={"firstName"}
-                                    placeholder={"First Name"}
-                                    onChange={(e) => form.setValue("firstName", e.target.value)}
-                                    error={form.formState.errors.firstName ? (true) : (false)}
-                                    errorMessage={form.formState.errors.firstName?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
-                              <TextInput
-                                    type={"text"}
-                                    name={"lastName"}
-                                    placeholder={"Last Name"}
-                                    onChange={(e) => form.setValue("lastName", e.target.value)}
-                                    error={form.formState.errors.lastName ? (true) : (false)}
-                                    errorMessage={form.formState.errors.lastName?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
                               <TextInput
                                     type={"email"}
                                     name={"email"}
@@ -80,12 +55,6 @@ export const UserRegisterForm = () => {
                                     errorMessage={form.formState.errors.email?.message}
                                     disabled={isPending}
                                     autoComplete={"off"}
-                              />
-                              <PhoneInput
-                                    country={'us'}
-                                    value={form.watch('phone')}
-                                    onChange={(phone) => form.setValue('phone', phone)}
-                                    inputStyle={{ width: '100%', }}
                               />
                               <TextInput
                                     type={"password"}
@@ -117,30 +86,19 @@ export const UserRegisterForm = () => {
                                           color={"rose-500"}
                                     />
                               ) : (
-                                    <Flex className={"flex-col space-y-4"}>
-                                          <h3 className={"text-xs text-slate-400"}>
-                                                By clicking Register, you agree to our <b>Terms</b>,
-                                                <b>Privacy Policy</b> and <b>Cookie Policy</b>.
-                                          </h3>
-
-                                          <Button
-                                                className={"w-full bg-slate-800 hover:bg-slate-900 border-slate-950 hover:border-slate-900"}
-                                                type={"submit"}
-                                          >
-                                                Register
-                                          </Button>
-                                    </Flex>
+                                    <Button type={"submit"} className="w-full ">
+                                          Sign in
+                                    </Button>
                               )}
                         </Flex>
-
                   </form>
 
                   <div className="text-center flex flex-col sm:flex-row p-4" style={{ gap: '5px' }}>
-                        <Text> Already have an account?&nbsp;</Text>
-                        <Link href={"/auth/login"} className='text-tremor-default text-blue-600 underline'>
-                              Sign In Now
+                        <Text>Don't have an account?</Text>
+                        <Link href={"/auth/register"} className='text-tremor-default text-blue-600 underline'>
+                              Register Now
                         </Link>
                   </div>
             </WrapperForm>
       );
-};
+};    

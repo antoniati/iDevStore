@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Flex } from "@tremor/react";
-import { BsGithub, BsInfoCircle } from "react-icons/bs";
-import { cn } from "@/libs/tw-merge";
 import { usePathname } from "next/navigation";
+import { BsGithub, BsInfoCircle } from "react-icons/bs";
+import { Button, Flex } from "@tremor/react";
+import { cn } from "@/libs/tw-merge";
 
 export const HeaderLandigPage = () => {
       const pathname = usePathname();
@@ -46,22 +46,21 @@ export const HeaderLandigPage = () => {
                                     </Link>
                               </Flex>
 
+                              <span
+                                    style={{
+                                          height: "40px",
+                                          padding: "1px",
+                                          backgroundColor: "#E2E8F0",
+                                          borderRadius: "15%"
+                                    }}
+                              ></span>
+
                               {!isAuthPage && (
-                                    <>
-                                          <span
-                                                style={{
-                                                      height: "40px",
-                                                      padding: "1px",
-                                                      backgroundColor: "#E2E8F0",
-                                                      borderRadius: "15%"
-                                                }}
-                                          ></span>
-                                          <Button size="xs">
-                                                <Link href={"/auth/login"}>
-                                                      Sign In
-                                                </Link>
-                                          </Button>
-                                    </>
+                                    <Button size="xs">
+                                          <Link href={"/auth/login"}>
+                                                Sign In
+                                          </Link>
+                                    </Button>
                               )}
                         </Flex>
                   </Flex>

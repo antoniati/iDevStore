@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-white text-slate-800")}>
+      <body className={cn(inter.className, "bg-white text-slate-800")} suppressHydrationWarning={true}>
         <HeaderLandigPage />
         {children}
         <MainFooter />

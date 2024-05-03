@@ -28,7 +28,7 @@
 
 /* Hero Section */
 .heroSection {
-      @apply w-full flex flex-col items-center justify-center space-y-4 text-center bg-slate-50 py-[100px];
+      @apply w-full flex flex-col items-center justify-center space-y-4 text-center bg-slate-50 py-[100px] p-4;
 }
 
 /* Tech Section */

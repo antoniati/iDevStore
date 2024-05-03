@@ -1,6 +1,5 @@
-import { BsArrowRight } from "react-icons/bs";
-import { Button, Divider, Flex, Text, Title } from "@tremor/react";
 import Link from "next/link";
+import { Divider, Flex, Text, Title } from "@tremor/react";
 
 export const Doubts = () => {
       return (

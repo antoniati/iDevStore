@@ -1,6 +1,5 @@
 import { Flex, Subtitle, Text, } from "@tremor/react";
-import { AnimBottomToTop } from "@/components/animations/AnimBottomToTop";
-import { Doubts } from "@/components/footers/Doubts";
+import { AnimBottomToTop, Doubts } from "@/components";
 import { WrapperFormProps } from "@/types";
 
 export const WrapperForm = ({ titleForm, descriptionForm, children }: WrapperFormProps) => {

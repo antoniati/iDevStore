@@ -2,13 +2,9 @@
 
 import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { AnimBottomToTopProps } from "@/types";
 
-interface AnimBottomToTop {
-      children: React.ReactNode;
-      delay?: number;
-};
-
-export const AnimBottomToTop = ({ children, delay = 0 }: AnimBottomToTop) => {
+export const AnimBottomToTop = ({ children, delay = 0 }: AnimBottomToTopProps) => {
       const controls = useAnimation();
 
       useEffect(() => {

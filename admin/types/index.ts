@@ -10,3 +10,8 @@ export interface WrapperFormProps {
       descriptionForm: string;
       children: React.ReactNode;
 };
+
+export interface AnimBottomToTopProps {
+      children: React.ReactNode;
+      delay?: number;
+};

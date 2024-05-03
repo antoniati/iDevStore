@@ -6,9 +6,8 @@ import { Button, Divider, Grid, Subtitle } from "@tremor/react";
 import { Dialog, Transition } from "@headlessui/react";
 import { techIcons } from "@/utils/tech-icons-data";
 import { TechIconProps } from "@/types";
-import { cn } from "@/libs/tw-merge";
 
-export default function TechSections() {
+export const TechSections = () => {
       const [isOpen, setIsOpen] = useState<boolean>(false);
       const [selectedIcon, setSelectedIcon] = useState<TechIconProps | null>(null);
 

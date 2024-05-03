@@ -1,8 +1,7 @@
 "use client";
 
-import { BsGithub } from "react-icons/bs";
-import { Button, Flex, Metric, Title } from "@tremor/react";
 import Link from "next/link";
+import { Button, Flex, Metric, Title } from "@tremor/react";
 
 export const HeroSection = () => {
       return (

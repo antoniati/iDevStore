@@ -9,10 +9,12 @@ import { useForm } from "react-hook-form";
 import { SyncLoading, WrapperForm } from "@/components";
 import { LoginSchema } from "@/schemas";
 import { useRouter } from "next/navigation";
+import { loginSession } from "@/actions/create/login-session";
 
 export const UserLoginForm = () => {
       const [error, setError] = useState<string>("");
       const [success, setSuccess] = useState<string>("");
+      const [showTwoFactor, setShowTwoFactor] = useState(false);
 
       const [isPending, startTransition] = useTransition();
 
@@ -26,7 +28,23 @@ export const UserLoginForm = () => {
 
       const onSubmit = (values: z.infer<typeof LoginSchema>) => {
             startTransition(() => {
-                  console.log(values)
+                  loginSession(values)
+                        .then((data) => {
+                              if (data?.error) {
+                                    setError(data.error)
+                              }
+
+                              if (data?.success) {
+                                    setSuccess(data.success)
+                              }
+
+                              if (data?.twoFactor) {
+                                    setShowTwoFactor(true)
+                              }
+                        })
+                        .catch(() =>
+                              setError("Oops! An internal server error has occurred. Please check the situation and try again.")
+                        );
             });
       };
 
@@ -40,50 +58,65 @@ export const UserLoginForm = () => {
 
       return (
             <WrapperForm
-                  titleForm={"Welcome Back"}
-                  descriptionForm={"Sign in to your account and enjoy an improved management experience."}
+                  titleForm={showTwoFactor ? ("Two-factor authentication") : ("Welcome back")}
+                  descriptionForm={showTwoFactor ? ("Please enter the authentication code we sent to your email") : "Sign in to your account and enjoy an improved management experience."}
             >
                   <form
                         className={"w-full space-y-4"}
                         onSubmit={form.handleSubmit(onSubmit)}
                         onChange={cleanMessages}
                   >
-                        <Flex className={"flex-col space-y-4 items-start"}>
+                        {showTwoFactor && (
                               <TextInput
-                                    type={"email"}
-                                    name={"email"}
-                                    placeholder={"Your E-mail"}
-                                    onChange={(e) => form.setValue("email", e.target.value)}
-                                    error={form.formState.errors.email ? (true) : (false)}
-                                    errorMessage={form.formState.errors.email?.message}
+                                    type={"text"}
+                                    name={"code"}
+                                    placeholder={"123456"}
+                                    onChange={(e) => form.setValue("code", e.target.value)}
+                                    error={form.formState.errors.code ? (true) : (false)}
+                                    errorMessage={"Este campo é obrigatório"}
                                     disabled={isPending}
                                     autoComplete={"off"}
                               />
-                              <TextInput
-                                    type={"password"}
-                                    name={"password"}
-                                    placeholder={"Password"}
-                                    onChange={(e) => form.setValue("password", e.target.value)}
-                                    error={form.formState.errors.password ? (true) : (false)}
-                                    errorMessage={form.formState.errors.password?.message}
-                                    disabled={isPending}
-                                    autoComplete={"off"}
-                              />
+                        )}
 
-                              {!isPending && (
-                                    <Button
-                                          type={"button"}
-                                          size={"xs"}
-                                          variant={"light"}
-                                          onClick={() => router.push("/auth/reset")}
-                                          className={"ml-1"}
-                                    >
-                                          <span className={"text-tremor-label"}>
-                                                Forgot Password ?
-                                          </span>
-                                    </Button>
-                              )}
-                        </Flex>
+                        {!showTwoFactor && (
+                              <Flex className={"flex-col space-y-4 items-start"}>
+                                    <TextInput
+                                          type={"email"}
+                                          name={"email"}
+                                          placeholder={"Your E-mail"}
+                                          onChange={(e) => form.setValue("email", e.target.value)}
+                                          error={form.formState.errors.email ? (true) : (false)}
+                                          errorMessage={form.formState.errors.email?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+                                    <TextInput
+                                          type={"password"}
+                                          name={"password"}
+                                          placeholder={"Password"}
+                                          onChange={(e) => form.setValue("password", e.target.value)}
+                                          error={form.formState.errors.password ? (true) : (false)}
+                                          errorMessage={form.formState.errors.password?.message}
+                                          disabled={isPending}
+                                          autoComplete={"off"}
+                                    />
+
+                                    {!isPending && (
+                                          <Button
+                                                type={"button"}
+                                                size={"xs"}
+                                                variant={"light"}
+                                                onClick={() => router.push("/auth/reset")}
+                                                className={"ml-1"}
+                                          >
+                                                <span className={"text-tremor-label"}>
+                                                      Forgot Password ?
+                                                </span>
+                                          </Button>
+                                    )}
+                              </Flex>
+                        )}
 
                         <Divider />
 
@@ -103,8 +136,15 @@ export const UserLoginForm = () => {
                                           color={"rose-500"}
                                     />
                               ) : (
-                                    <Button type={"submit"} className="w-full ">
-                                          Sign in
+                                    <Button
+                                          className={showTwoFactor ? "w-full bg-slate-800 hover:bg-slate-900 border-slate-950 hover:border-slate-900" : "w-full duration-300"}
+                                          type={"submit"}
+                                          disabled={isPending}
+                                    >
+                                          {!showTwoFactor
+                                                ? ("Sign In")
+                                                : ("Confirm")
+                                          }
                                     </Button>
                               )}
                         </Flex>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, Divider, Flex, Text, TextInput } from "@tremor/react"
@@ -8,7 +9,6 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { SyncLoading, WrapperForm } from "@/components";
 import { LoginSchema } from "@/schemas";
-import { useRouter } from "next/navigation";
 import { loginSession } from "@/actions/create/login-session";
 
 export const UserLoginForm = () => {
@@ -17,6 +17,10 @@ export const UserLoginForm = () => {
       const [showTwoFactor, setShowTwoFactor] = useState(false);
 
       const [isPending, startTransition] = useTransition();
+
+      const searchParams = useSearchParams();
+
+      const callbackUrl = searchParams.get("callbackUrl");
 
       const form = useForm<z.infer<typeof LoginSchema>>({
             resolver: zodResolver(LoginSchema),
@@ -28,7 +32,7 @@ export const UserLoginForm = () => {
 
       const onSubmit = (values: z.infer<typeof LoginSchema>) => {
             startTransition(() => {
-                  loginSession(values)
+                  loginSession(values, callbackUrl)
                         .then((data) => {
                               if (data?.error) {
                                     setError(data.error)

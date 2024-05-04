@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { BsGithub, BsInfoCircle } from "react-icons/bs";
 import { Button, Flex } from "@tremor/react";
 import { cn } from "@/libs/tw-merge";
+import { LoginButton } from "../buttons/LoginButton";
 
 export const HeaderLandigPage = () => {
       const pathname = usePathname();
@@ -56,11 +57,11 @@ export const HeaderLandigPage = () => {
                               ></span>
 
                               {!isAuthPage && (
-                                    <Button size="xs">
-                                          <Link href={"/auth/login"}>
+                                    <LoginButton>
+                                          <Button size="xs">
                                                 Sign In
-                                          </Link>
-                                    </Button>
+                                          </Button>
+                                    </LoginButton>
                               )}
                         </Flex>
                   </Flex>

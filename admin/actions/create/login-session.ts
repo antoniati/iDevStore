@@ -2,11 +2,21 @@
 
 import * as z from "zod";
 import { db } from "@/libs/db";
-import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/libs/mail";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/schemas";
-import { generateTwoFactorToken, generateVerificationToken, getTwoFactorConfirmationByUserId, getTwoFactorTokenByEmail, getUserByEmail } from "@/actions";
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/libs/mail";
 
-export const loginSession = async (values: z.infer<typeof LoginSchema>) => {
+import {
+      generateTwoFactorToken,
+      generateVerificationToken,
+      getTwoFactorConfirmationByUserId,
+      getTwoFactorTokenByEmail,
+      getUserByEmail
+} from "@/actions";
+
+export const loginSession = async (values: z.infer<typeof LoginSchema>, callbackUrl?: string | null,) => {
       const validatedFields = LoginSchema.safeParse(values);
 
       if (!validatedFields.success) return { error: "Invalid or non-existent fields. Please enter valid fields." };
@@ -60,6 +70,21 @@ export const loginSession = async (values: z.infer<typeof LoginSchema>) => {
             };
       };
 
-      // TODO: Next Auth SignIn...
-      console.log(existingUser.isTwoFactorEnabled)
+      try {
+            await signIn("credentials", {
+                  email,
+                  password,
+                  redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+            });
+      } catch (error) {
+            if (error instanceof AuthError) {
+                  switch (error.type) {
+                        case "CredentialsSignin":
+                              return { error: "Invalid credentials. Please enter valid credentials." };
+                        default:
+                              return { error: "Oops! An internal server error has occurred. Please check the situation and try again" };
+                  };
+            };
+            throw error
+      };
 };

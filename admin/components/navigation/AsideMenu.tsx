@@ -1,15 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Flex } from "@tremor/react";
+import { usePathname } from "next/navigation";
 import { BsBoxSeam, BsChevronCompactLeft, BsClipboardData, BsGrid, BsLayers } from "react-icons/bs";
+import { Button, Flex } from "@tremor/react";
+import { AsideProps, NavigationProps } from "@/types";
 
-interface asideMenuProps {
-      icon: React.ElementType;
-      title: string;
-      pageUrl: string;
-}
-
-const asideNavigationData: asideMenuProps[] = [
+const navAside: NavigationProps[] = [
       {
             icon: BsGrid,
             title: "Dashboard",
@@ -32,14 +30,28 @@ const asideNavigationData: asideMenuProps[] = [
       },
 ];
 
-type Props = {
-      isAsideVisible: boolean
-      setIsAsideVisible: (isAsideVisible: boolean) => void;
-}
+export const AsideMenu = ({ isAsideVisible, setIsAsideVisible, isMobile }: AsideProps) => {
+      const pathname = usePathname();
 
-export const AsideMenu = ({ isAsideVisible, setIsAsideVisible }: Props) => {
+      // Estilos para o aside fixo em telas menores que 600px
+      const asideStyle = isMobile ? {
+            position: "fixed" as const,
+            top: 0,
+            left: isAsideVisible ? 0 : "-300px",
+            height: "100vh",
+            width: "300px",
+            transition: "left 0.3s ease-in-out",
+            zIndex: 20,
+      } : {
+            height: "100vh",
+            width: "300px",
+      };
+
       return (
-            <aside className={`h-full justify-between p-4 bg-white overflow-auto ${isAsideVisible ? "w-72 sm:w-0" : "hidden"}`}>
+            <aside
+                  className={`${isAsideVisible ? "h-full p-4 bg-white overflow-auto" : "hidden"}`}
+                  style={asideStyle}
+            >
                   <Flex className="p-4">
                         <Link href={"/"}>
                               <Flex className="w-1/2 justify-start space-x-2">
@@ -54,7 +66,7 @@ export const AsideMenu = ({ isAsideVisible, setIsAsideVisible }: Props) => {
                         </Link>
 
                         <Button
-                              className="text-slate-800 hover:bg-blue-50 rounded-tremor-full p-2 transition-all duration-300"
+                              className="text-slate-800 hover:bg-blue-50 rounded-tremor-full p-2 hover:text-slate-800 transition-all duration-300"
                               variant="light"
                               onClick={() => setIsAsideVisible(!isAsideVisible)}
                         >
@@ -64,16 +76,27 @@ export const AsideMenu = ({ isAsideVisible, setIsAsideVisible }: Props) => {
 
                   {isAsideVisible && (
                         <nav className="h-full" style={{ paddingTop: "40px" }}>
-                              <ul className="flex-col">
-                                    {asideNavigationData.map((asideData, index) => (
-                                          <li key={index} className="p-4">
-                                                <Button icon={asideData.icon} variant="light" className="text-slate-800">
-                                                      <Link href={`${asideData.pageUrl}`}>
-                                                            {asideData.title}
+                              <ul className="flex-col space-y-1">
+                                    {navAside.map((item, index) => {
+                                          const isActive = pathname === item.pageUrl;
+                                          const buttonClasses = isActive
+                                                ? "justify-start rounded-tremor-default w-full p-4 bg-blue-50 hover:text-slate-800 text-slate-800 font-bold"
+                                                : "justify-start rounded-tremor-default w-full p-4 hover:bg-blue-50 text-slate-800 hover:text-slate-800";
+
+                                          return (
+                                                <li key={index}>
+                                                      <Link href={item.pageUrl}>
+                                                            <Button
+                                                                  icon={item.icon}
+                                                                  variant="light"
+                                                                  className={buttonClasses}
+                                                            >
+                                                                  {item.title}
+                                                            </Button>
                                                       </Link>
-                                                </Button>
-                                          </li>
-                                    ))}
+                                                </li>
+                                          );
+                                    })}
                               </ul>
                         </nav>
                   )}

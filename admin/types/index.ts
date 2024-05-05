@@ -15,3 +15,15 @@ export interface AnimBottomToTopProps {
       children: React.ReactNode;
       delay?: number;
 };
+
+export interface AsideProps {
+      isAsideVisible: boolean
+      setIsAsideVisible: (isAsideVisible: boolean) => void;
+      isMobile?: boolean;
+};
+
+export interface NavigationProps {
+      icon: React.ElementType;
+      title: string;
+      pageUrl: string;
+};

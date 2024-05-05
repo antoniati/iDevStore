@@ -1,5 +1,5 @@
 import { HeaderLandigPage } from "./navigation/HeaderLandigPage";
-import { HeaderDashboard } from "./navigation/HeaderDashboard";
+import { HeaderSections } from "./sections/HeaderSections";
 import { AsideMenu } from "./navigation/AsideMenu";
 import { HeroSection } from "./sections/HeroSection";
 import { TechSections } from "./sections/TechsSection";
@@ -19,7 +19,7 @@ import { LogoutButton } from "./buttons/LogoutButton";
 
 export {
       HeaderLandigPage,
-      HeaderDashboard,
+      HeaderSections,
       AsideMenu,
       HeroSection,
       TechSections,

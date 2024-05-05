@@ -1,20 +1,39 @@
-import type { Metadata } from "next";
+"use client";
 
-import { cn } from "@/libs/tw-merge";
+import { Card, Divider } from "@tremor/react";
+import { AsideMenu, HeaderSections } from "@/components";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
-import { Inter } from "next/font/google";
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+  // Controla a visibilidade do aside
+  const [isAsideVisible, setIsAsideVisible] = useState(true);
 
-const inter = Inter({ subsets: ["latin"] });
+  // useMediaQuery para saber se a tela é menor que 600px
+  const isMobile = useMediaQuery({ query: "(max-width: 600px)" });
 
-export const metadata: Metadata = {
-  title: "iDevStore",
-  description: "Everything you need to manage your store",
-};
+  // Atualiza a visibilidade do aside com base no tamanho da tela
+  useEffect(() => {
+    setIsAsideVisible(!isMobile);
+  }, [isMobile]);
 
-export default async function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
-    <main className={cn(inter.className, "bg-white text-slate-800")}>
-      {children}
+    <main className="w-full flex justify-between" style={{ height: "100vh" }}>
+      <AsideMenu
+        isAsideVisible={isAsideVisible}
+        setIsAsideVisible={setIsAsideVisible}
+        isMobile={isMobile}
+      />
+      <div className="w-full p-2">
+        <Card className="h-full">
+          <HeaderSections
+            isAsideVisible={isAsideVisible}
+            setIsAsideVisible={setIsAsideVisible}
+          />
+          <Divider />
+          {children}
+        </Card>
+      </div>
     </main>
   );
 };

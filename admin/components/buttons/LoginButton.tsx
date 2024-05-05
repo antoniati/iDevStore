@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-export const LoginButton = ({ children, }: { children: React.ReactNode }) => {
+export const LoginButton = ({ children, pageUrl }: { children: React.ReactNode, pageUrl: string }) => {
       const router = useRouter();
 
-      const handleOnClickButton = () => router.push("/auth/login");
+      const handleOnClickButton = () => router.push(`${pageUrl}`);
 
       return (
             <span

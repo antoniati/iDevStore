@@ -25,9 +25,7 @@ export default async function RootLayout({ children, }: Readonly<{ children: Rea
           className={cn(inter.className, "bg-white text-slate-800")}
           suppressHydrationWarning={true}
         >
-          <HeaderLandigPage />
           {children}
-          <MainFooter />
         </body>
       </html>
     </SessionProvider>

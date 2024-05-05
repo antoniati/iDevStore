@@ -1,15 +1,22 @@
-import { Button } from "@tremor/react";
-import { LogoutButton } from "@/components/buttons/LogoutButton";
+"use client";
+
+import { useState } from "react";
+import { AsideMenu, DashboardSection } from "@/components"
 
 export default function Dashboard() {
+  const [isAsideVisible, setIsAsideVisible] = useState(true);
+
   return (
-    <div style={{ padding: "100px" }}>
-      Dashboard
-      <LogoutButton>
-        <Button type="button">
-          Log Out
-        </Button>
-      </LogoutButton>
-    </div>
+    <main className="w-full flex justify-between" style={{ height: "100vh" }}>
+      <AsideMenu
+        isAsideVisible={isAsideVisible}
+        setIsAsideVisible={setIsAsideVisible}
+      />
+
+      <DashboardSection
+        isAsideVisible={isAsideVisible}
+        setIsAsideVisible={setIsAsideVisible}
+      />
+    </main>
   )
 }

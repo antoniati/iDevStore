@@ -1,10 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { Button, Flex, Metric, Title } from "@tremor/react";
-import { LoginButton } from "../buttons/LoginButton";
+import { BeatLoading, LoginButton } from "@/components";
 
 export const HeroSection = () => {
+      const [isLoadingPage, setIsLoadingPage] = useState<boolean>(false);
+
+      const handleLoadingPage = () => setIsLoadingPage(true);
+
       return (
             <section className="heroSection">
                   <Metric>
@@ -13,16 +17,21 @@ export const HeroSection = () => {
                   <Title>
                         With an intuitive interface and advanced features, iDevStore lets you control every aspect of your store, from product management to sales tracking
                   </Title>
-                  <Flex className="justify-center space-x-2 p-4">
-                        <LoginButton>
-                              <Button>
-                                    Sign In
-                              </Button>
-                        </LoginButton>
-                        <Button variant="secondary" >
-                              <Link href={"/auth/register"}> Register </Link>
-                        </Button>
-                  </Flex>
+
+                  {!isLoadingPage ? (
+                        <Flex className="justify-center space-x-2 p-4">
+                              <LoginButton pageUrl="/auth/login">
+                                    <Button className="" onClick={handleLoadingPage}>
+                                          Sign In
+                                    </Button>
+                              </LoginButton>
+                              <LoginButton pageUrl="/auth/register">
+                                    <Button variant="secondary" onClick={handleLoadingPage}>
+                                          Register
+                                    </Button>
+                              </LoginButton>
+                        </Flex>
+                  ) : (<BeatLoading />)}
             </section>
       );
 };

@@ -10,8 +10,8 @@ type LogoutButtonProps = {
 export const LogoutButton = ({ children }: LogoutButtonProps) => {
       const router = useRouter();
 
-      const executeLogoutSessionOnClick = () => {
-            logoutSession();
+      const executeLogoutSessionOnClick = async () => {
+            await logoutSession();
             router.push("/");
       };
 

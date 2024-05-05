@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Callout, Divider, Flex, Text, TextInput } from "@tremor/react"
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { SyncLoading, WrapperForm } from "@/components";
+import { BeatLoading, WrapperForm } from "@/components";
 import { LoginSchema } from "@/schemas";
 import { loginSession } from "@/actions/create/login-session";
 
@@ -126,7 +126,7 @@ export const UserLoginForm = () => {
 
                         <Flex flexDirection={"col"} >
                               {isPending ? (
-                                    <SyncLoading />
+                                    <BeatLoading />
                               ) : error ? (
                                     <Callout
                                           className={"w-full"}

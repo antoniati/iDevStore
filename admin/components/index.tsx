@@ -17,6 +17,9 @@ import { AnimBottomToTop } from "./animations/AnimBottomToTop";
 import { LoginButton } from "./buttons/LoginButton";
 import { LogoutButton } from "./buttons/LogoutButton";
 
+import { CategoryTable } from "./tables/CategoryTable";
+import { TitleSection } from "./sections/TitleSection";
+
 export {
       HeaderLandigPage,
       HeaderSections,
@@ -35,4 +38,6 @@ export {
       AnimBottomToTop,
       LoginButton,
       LogoutButton,
+      CategoryTable,
+      TitleSection,
 };

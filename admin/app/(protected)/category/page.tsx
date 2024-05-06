@@ -1,5 +1,7 @@
+import { CategorySection } from "@/components/sections/CategorySection";
+
 export default function CategoryPage() {
   return (
-    <h1>Category Page</h1>
+    <CategorySection />
   );
 };

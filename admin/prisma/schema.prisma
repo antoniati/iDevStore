@@ -40,6 +40,7 @@ model User {
   // Security features for two-factor authentication
   isTwoFactorEnabled    Boolean                @default(false) // Indicates if 2FA is enabled
   twoFactorConfirmation TwoFactorConfirmation? // Relationship with the TwoFactorConfirmation model
+  Category              Category[]
 }
 
 // Model representing tokens for email verification. 
@@ -84,4 +85,16 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation with the User model
 
   @@unique([userId]) // Unique constraint to ensure one confirmation per user
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  parent String?
+
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 }

@@ -1,3 +1,8 @@
+export interface TitleSectionProps {
+      icon?: React.ComponentType<{ size?: number }>;
+      title: string;
+};
+
 export interface TechIconProps {
       name: string;
       description: string;
@@ -27,3 +32,11 @@ export interface NavigationProps {
       title: string;
       pageUrl: string;
 };
+
+export interface CategoryProps {
+      id: string;
+      name: string;
+      parent: string | null;
+      createdAt: Date | null;
+      updatedAt: Date | null;
+}

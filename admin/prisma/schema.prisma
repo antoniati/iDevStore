@@ -41,6 +41,7 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false) // Indicates if 2FA is enabled
   twoFactorConfirmation TwoFactorConfirmation? // Relationship with the TwoFactorConfirmation model
   Category              Category[]
+  Product               Product[]
 }
 
 // Model representing tokens for email verification. 
@@ -92,9 +93,28 @@ model Category {
   name   String  @unique
   parent String?
 
-  createdAt DateTime @default(now()) 
-  updatedAt DateTime @updatedAt 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId String?
   user   User?   @relation(fields: [userId], references: [id])
+
+  Product Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  price       String
+  name        String
+  images      String[]
+  description String
+
+  properties Json?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  Category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  categoryName String?
 }

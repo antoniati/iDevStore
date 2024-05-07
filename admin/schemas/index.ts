@@ -24,6 +24,21 @@ export const ResetSchema = z.object({
 });
 
 export const CategorySchema = z.object({
-      name: z.string().min(1, { message: "name is required" }),
+      name: z.string().min(1, { message: "category name is required" }),
       parent: z.string().optional(),
+});
+
+export const PropertySchema = z.object({
+      name: z.string().min(1, { message: "Property name is required" }),
+      values: z.array(z.string()).min(1, { message: "Property values are required" }),
+});
+
+export const ProductSchema = z.object({
+      name: z.string().min(1, { message: "Product name is required" }),
+      categoryId: z.string().optional(),
+      categoryName: z.string().optional(),
+      price: z.string().min(1, { message: "Product price is required" }),
+      images: z.array(z.string()).optional(),
+      description: z.string().min(1, { message: "Product description is required" }),
+      properties: z.array(PropertySchema).optional(),
 });

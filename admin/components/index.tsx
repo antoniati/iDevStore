@@ -29,6 +29,9 @@ import { ProductTable } from "@/components/tables/ProductTable";
 import { ProductRegisterForm } from "@/components/forms/ProductRegisterForm";
 import { ProductEditForm } from "@/components/forms/ProductEditform";
 
+import { OrderSection } from "@/components/sections/OrderSection";
+import { OrderTable } from "@/components/tables/OrderTable";
+
 export {
       HeaderLandigPage,
       HeaderSections,
@@ -56,4 +59,6 @@ export {
       ProductTable,
       ProductRegisterForm,
       ProductEditForm,
+      OrderSection,
+      OrderTable,
 };

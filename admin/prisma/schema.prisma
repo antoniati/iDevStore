@@ -42,6 +42,7 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation? // Relationship with the TwoFactorConfirmation model
   Category              Category[]
   Product               Product[]
+  Order                 Order[]
 }
 
 // Model representing tokens for email verification. 
@@ -117,4 +118,22 @@ model Product {
   Category     Category? @relation(fields: [categoryId], references: [id])
   categoryId   String?
   categoryName String?
+}
+
+model Order {
+  id         String  @id @default(uuid())
+  line_items Json
+  name       String
+  email      String
+  city       String
+  cep        String
+  street     String
+  phone      String
+  paid       Boolean
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

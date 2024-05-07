@@ -5,13 +5,15 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState, useTransition } from "react";
-import { BsBoxSeam, BsTrashFill } from "react-icons/bs";
+import { BsBoxSeam, BsTrash, BsTrashFill, BsUpload } from "react-icons/bs";
 import { Button, Callout, Divider, Flex, Select, SelectItem, TextInput, Textarea } from "@tremor/react";
-import { BeatLoading, AnimBottomToTop, TitleSection } from "@/components";
+import { BeatLoading, AnimBottomToTop, TitleSection, BounceLoading } from "@/components";
 import { ProductSchema } from "@/schemas";
 import { useCategoryData } from "@/hooks/use-category-data";
 import { useProductDataById } from "@/hooks/use-product-data";
 import { updateProduct } from "@/actions/update/update-product";
+import useUploadedFiles from "@/hooks/use-uploaded-files";
+import Image from "next/image";
 
 interface PropsOfProperties {
       name: string;
@@ -53,6 +55,16 @@ export const ProductEditForm = ({ productId }: { productId: string }) => {
 
       const router = useRouter();
 
+      const {
+            uploadedFiles,
+            isUploadingFiles,
+            errorUploadFiles,
+            setErrorUploadFiles,
+            handleUploadFiles,
+            setUploadedFiles,
+            removeFile
+      } = useUploadedFiles();
+
       const form = useForm<z.infer<typeof ProductSchema>>({
             resolver: zodResolver(ProductSchema),
       });
@@ -62,12 +74,18 @@ export const ProductEditForm = ({ productId }: { productId: string }) => {
 
             if (product) {
                   const convertedProperties = convertToPropsOfProperties(product.properties);
+
                   setProperties(convertedProperties);
+
+                  if (product.images.length > 0) {
+                        setUploadedFiles(product.images)
+                  }
 
                   form.reset({
                         name: product.name,
                         price: product.price,
                         description: product.description,
+                        images: product.images,
                         categoryId: product.categoryId ?? "",
                         categoryName: product.categoryName ?? "",
                         properties: convertedProperties,
@@ -79,6 +97,14 @@ export const ProductEditForm = ({ productId }: { productId: string }) => {
 
       const onSubmit = (values: z.infer<typeof ProductSchema>) => {
             setIsPending(true);
+
+            if (uploadedFiles.length === 0) {
+                  setIsPending(false);
+                  setError("Please insert product photos. Click the upload button to add photos.");
+                  return;
+            };
+
+            values.images = uploadedFiles;
 
             values.properties = properties;
 
@@ -194,6 +220,60 @@ export const ProductEditForm = ({ productId }: { productId: string }) => {
                                                       paddingInline: "5px"
                                                 }}
                                           >
+                                                <div className="w-full space-y-1">
+                                                      <h3 className="text-tremor-label font-bold text-slate-800 ml-1 mb-2">Product Photos</h3>
+                                                      <div className="flex flex-wrap items-center" style={{ gap: "10px" }}>
+                                                            {!!uploadedFiles?.length && uploadedFiles?.map((link, index) => (
+                                                                  <div className="relative" key={index}>
+                                                                        <Button
+                                                                              type={"button"}
+                                                                              className={"deleteButton"}
+                                                                              icon={BsTrash}
+                                                                              variant={"light"}
+                                                                              size={"xs"}
+                                                                              onClick={() => removeFile(index)}
+                                                                        />
+                                                                        <Image
+                                                                              src={`${link}`}
+                                                                              alt={`Uploaded image ${index + 1}`}
+                                                                              width={80}
+                                                                              height={80}
+                                                                              className="rounded-tremor-default"
+                                                                        />
+                                                                  </div>
+                                                            ))}
+
+                                                            {isUploadingFiles && (
+                                                                  <div className="h-24 flex items-center">
+                                                                        <BounceLoading />
+                                                                  </div>
+                                                            )}
+
+                                                            <label
+                                                                  className="h-24 border-2 rounded-tremor-default cursor-pointer text-center flex flex-col items-center justify-center text-sm gap-1 text-slate-800 bg-slate-200 border-slate-300 p-1"
+                                                                  style={{ widows: '60px', height: '60px' }}
+                                                            >
+                                                                  <BsUpload size={20} className="text-slate-600" />
+                                                                  <span> Upload </span>
+                                                                  <input
+                                                                        className="hidden"
+                                                                        type="file"
+                                                                        id="file"
+                                                                        name="file"
+                                                                        accept="images/*"
+                                                                        multiple
+                                                                        onChange={handleUploadFiles}
+                                                                  />
+                                                            </label>
+
+                                                            {!uploadedFiles?.length && !isUploadingFiles && (
+                                                                  <h3 className="text-tremor-label">
+                                                                        Click the upload button to add photos
+                                                                  </h3>
+                                                            )}
+                                                      </div>
+                                                </div>
+
                                                 <div className="w-full space-y-1">
                                                       <h3 className="text-tremor-label font-bold text-slate-800 ml-1">
                                                             Product Name
@@ -323,6 +403,23 @@ export const ProductEditForm = ({ productId }: { productId: string }) => {
                                                             title={`${error}`}
                                                             color={"rose-500"}
                                                       />
+                                                </Flex>
+                                          ) : errorUploadFiles ? (
+                                                <Flex className="w-full flex-col space-y-1">
+                                                      <AnimBottomToTop>
+                                                            <Callout
+                                                                  className={"w-full"}
+                                                                  title={`${errorUploadFiles}`}
+                                                                  color={"red"}
+                                                            />
+                                                      </AnimBottomToTop>
+                                                      <Button
+                                                            className="w-full"
+                                                            type={"button"}
+                                                            onClick={() => setErrorUploadFiles("")}
+                                                      >
+                                                            OK
+                                                      </Button>
                                                 </Flex>
                                           ) : success ? (
                                                 <Flex className="w-full items-start flex-col space-y-4">

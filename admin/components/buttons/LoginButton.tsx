@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LoginButtonProps } from "@/types";
 
-export const LoginButton = ({ children, pageUrl }: { children: React.ReactNode, pageUrl: string }) => {
+export const LoginButton = ({ children, pageUrl }: LoginButtonProps) => {
       const router = useRouter();
 
-      const handleOnClickButton = () => router.push(`${pageUrl}`);
+      const handleOnClickButton = () => router.push(pageUrl);
 
       return (
             <span

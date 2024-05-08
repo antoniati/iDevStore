@@ -1,3 +1,8 @@
+export interface LoginButtonProps {
+      children: React.ReactNode;
+      pageUrl: string;
+};
+
 export interface TitleSectionProps {
       icon?: React.ComponentType<{ size?: number }>;
       title: string;

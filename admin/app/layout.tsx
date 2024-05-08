@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
-
-import { cn } from "@/libs/tw-merge";
-import { HeaderLandigPage, MainFooter } from "@/components";
-
 import { Inter } from "next/font/google";
+import { auth } from "@/auth";
+import { cn } from "@/libs/tw-merge";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

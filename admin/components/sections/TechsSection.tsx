@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { Button, Divider, Grid, Subtitle } from "@tremor/react";
+import { Button, Divider, Flex, Grid, Subtitle, Text } from "@tremor/react";
 import { Dialog, Transition } from "@headlessui/react";
 import { techIcons } from "@/utils/tech-icons-data";
 import { TechIconProps } from "@/types";
@@ -17,12 +17,14 @@ export const TechSections = () => {
       };
 
       return (
-            <section className="techSection">
-                  <div className="mainContainer">
+            <section className="tech-section">
+                  <div className="landing-container">
                         <Subtitle className="w-full text-center">
                               Created with the most modern technologies:
                         </Subtitle>
+
                         <Divider />
+
                         <Grid numItems={4} numItemsMd={6} numItemsLg={11} className="w-full">
                               {techIcons.map((icon, index) => (
                                     <Button
@@ -61,7 +63,7 @@ export const TechSections = () => {
                                     </Transition.Child>
 
                                     <div className="fixed inset-0 overflow-y-auto" style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}>
-                                          <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                          <Flex className="min-h-full p-4 text-center">
                                                 <Transition.Child
                                                       as={Fragment}
                                                       enter="ease-out duration-300"
@@ -71,53 +73,47 @@ export const TechSections = () => {
                                                       leaveFrom="opacity-100 scale-100"
                                                       leaveTo="opacity-0 scale-95"
                                                 >
-                                                      <Dialog.Panel
-                                                            className="w-full max-w-md transform overflow-hidden border-2 border-slate-200 rounded-tremor-default p-6 text-left align-middle shadow-xl transition-all bg-white"
-                                                      >
+                                                      <Dialog.Panel className="w-full max-w-md transform overflow-hidden border-2 border-slate-200 rounded-tremor-default p-6 text-left align-middle shadow-xl transition-all bg-white" >
                                                             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-800" >
-                                                                  <div className="flex items-center space-x-2">
+                                                                  <Flex className="justify-start space-x-2">
                                                                         <img
                                                                               alt={selectedIcon ? selectedIcon?.name : "Logotipo iDevStore"}
                                                                               src={selectedIcon ? selectedIcon.iconUrl : "/logo-dark.svg"}
-                                                                              className="w-4 object-cover"
+                                                                              style={{ width: "22px" }}
                                                                         />
-                                                                        <h2 className="text-tremor-title">
+                                                                        <Subtitle className="text-tremor-title">
                                                                               {selectedIcon ? selectedIcon.name : "iDevStore"}
-                                                                        </h2>
-                                                                  </div>
+                                                                        </Subtitle>
+                                                                  </Flex>
                                                             </Dialog.Title>
 
-                                                            <div className="mt-2">
-                                                                  <p className="text-tremor-title text-slate-600">
-                                                                        {selectedIcon ? (
-                                                                              <>
-                                                                                    {selectedIcon.description}
-                                                                                    <Link
-                                                                                          href={selectedIcon ? selectedIcon.documentationUrl : "/"}
-                                                                                          className="text-blue-500 ml-1"
-                                                                                          target="_blank"
-                                                                                          rel="noopener noreferrer"
-                                                                                    >
-                                                                                          See the documentation for more information
-                                                                                    </Link>
-                                                                              </>
-                                                                        ) : ""}
+                                                            <Text className="text-tremor-title text-slate-600 mt-2">
+                                                                  {selectedIcon ? (
+                                                                        <>
+                                                                              {selectedIcon.description}
+                                                                              <Link
+                                                                                    href={selectedIcon ? selectedIcon.documentationUrl : "/"}
+                                                                                    className="text-blue-500 ml-1"
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                              >
+                                                                                    See the documentation for more information
+                                                                              </Link>
+                                                                        </>
+                                                                  ) : ""}
+                                                            </Text>
 
-                                                                  </p>
-                                                            </div>
-
-                                                            <div className="mt-4">
-                                                                  <Button
-                                                                        size="lg"
-                                                                        type="button"
-                                                                        onClick={() => handleOpenModal(null)}
-                                                                  >
-                                                                        Close
-                                                                  </Button>
-                                                            </div>
+                                                            <Button
+                                                                  size="lg"
+                                                                  type="button"
+                                                                  onClick={() => handleOpenModal(null)}
+                                                                  className="mt-4"
+                                                            >
+                                                                  Close
+                                                            </Button>
                                                       </Dialog.Panel>
                                                 </Transition.Child>
-                                          </div>
+                                          </Flex>
                                     </div>
                               </Dialog>
                         </Transition>

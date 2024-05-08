@@ -22,17 +22,17 @@
       @apply sr-only md:not-sr-only;
 }
 
-.mainContainer {
+.landing-container {
       @apply flex flex-col items-start px-[100px] transition-all duration-300;
 }
 
 /* Hero Section */
-.heroSection {
+.hero-section {
       @apply w-full flex flex-col items-center justify-center space-y-4 text-center bg-slate-50 py-[100px] p-4;
 }
 
 /* Tech Section */
-.techSection {
+.tech-section {
       @apply w-full bg-slate-50 py-[100px];
 }
 
@@ -49,13 +49,13 @@
 @media (max-width: 768px) {
 
       /* Global Styles */
-      .mainContainer {
+      .landing-container {
             @apply px-5;
       }
 
       /* Hero Section and Tech Section */
-      .heroSection,
-      .techSection {
+      .hero-section,
+      .tech-section {
             @apply py-[50px];
       }
 
@@ -64,16 +64,16 @@
 @media (max-width: 600px) {
 
       /* Global Styles */
-      .mainContainer {
+      .landing-container {
             @apply w-full p-2;
       }
 
       /* Hero Section and Tech Section */
-      .heroSection {
+      .hero-section {
             @apply pt-[50px] pb-0;
       }
 
-      .techSection {
+      .tech-section {
             @apply py-[20px];
       }
 }

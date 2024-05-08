@@ -10,7 +10,7 @@ export const HeroSection = () => {
       const handleLoadingPage = () => setIsLoadingPage(true);
 
       return (
-            <section className="heroSection">
+            <section className="hero-section">
                   <Metric>
                         Everything you need to manage your store
                   </Metric>
@@ -20,18 +20,27 @@ export const HeroSection = () => {
 
                   {!isLoadingPage ? (
                         <Flex className="justify-center space-x-2 p-4">
-                              <LoginButton pageUrl="/auth/login">
-                                    <Button className="" onClick={handleLoadingPage}>
+                              <LoginButton pageUrl={"/auth/login"}>
+                                    <Button
+                                          type="button"
+                                          onClick={handleLoadingPage}
+                                    >
                                           Sign In
                                     </Button>
                               </LoginButton>
-                              <LoginButton pageUrl="/auth/register">
-                                    <Button variant="secondary" onClick={handleLoadingPage}>
+                              <LoginButton pageUrl={"/auth/register"}>
+                                    <Button
+                                          type="button"
+                                          variant="secondary"
+                                          onClick={handleLoadingPage}
+                                    >
                                           Register
                                     </Button>
                               </LoginButton>
                         </Flex>
-                  ) : (<BeatLoading />)}
+                  ) : (
+                        <BeatLoading />
+                  )}
             </section>
       );
 };

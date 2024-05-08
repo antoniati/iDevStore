@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { BsJustify } from "react-icons/bs";;
 import { Button, Flex } from "@tremor/react";
-import { LogoutButton } from "@/components";
+import { LogoutButton, UserButton } from "@/components";
 import { AsideProps } from "@/types";
 
 export const HeaderSections = ({ isAsideVisible, setIsAsideVisible }: AsideProps) => {
@@ -27,9 +29,7 @@ export const HeaderSections = ({ isAsideVisible, setIsAsideVisible }: AsideProps
                               </h2>
                         </Flex>
                         <Flex className="w-full justify-end">
-                              <LogoutButton>
-                                    Log Out
-                              </LogoutButton>
+                              <UserButton />
                         </Flex>
                   </Flex>
             </header>

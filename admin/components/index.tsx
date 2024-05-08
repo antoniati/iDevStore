@@ -14,6 +14,7 @@ import { SyncLoading } from "@/components/loadings/SyncLoading";
 import { BounceLoading } from "@/components/loadings/BounceLoading";
 import { AnimBottomToTop } from "@/components/animations/AnimBottomToTop";
 
+import { UserButton } from "@/components/buttons/UserButton";
 import { LoginButton } from "@/components/buttons/LoginButton";
 import { LogoutButton } from "@/components/buttons/LogoutButton";
 
@@ -61,4 +62,5 @@ export {
       ProductEditForm,
       OrderSection,
       OrderTable,
+      UserButton,
 };

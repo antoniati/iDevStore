@@ -17,7 +17,7 @@ export const LogoutButton = ({ children }: LogoutButtonProps) => {
 
       return (
             <span
-                  className={"cursor-pointer"}
+                  className={"w-full cursor-pointer"}
                   onClick={executeLogoutSessionOnClick}
             >
                   {children}

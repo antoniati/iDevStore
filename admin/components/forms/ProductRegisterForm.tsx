@@ -11,7 +11,7 @@ import { BeatLoading, AnimBottomToTop, TitleSection, BounceLoading } from "@/com
 import { registerProduct } from "@/actions/create/register-product";
 import { ProductSchema } from "@/schemas";
 import { useCategoryData } from "@/hooks/use-category-data";
-import useUploadedFiles from "@/hooks/use-uploaded-files";
+import { useUploadedFiles } from "@/hooks/use-uploaded-files";
 import Image from "next/image";
 
 interface PropsOfProperties {

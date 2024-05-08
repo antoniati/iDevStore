@@ -12,7 +12,7 @@ export const updateUser = async (values: z.infer<typeof UserEditSchema>, userId:
 
       if (!validatedFields.success) return { error: "Invalid or missing fields. Please enter valid fields." };
 
-      const { firstName, lastName, email, phone } = validatedFields.data;
+      const { firstName, lastName, email, phone, image } = validatedFields.data;
 
       const existingUser = await getUserByEmail(email);
 
@@ -28,6 +28,7 @@ export const updateUser = async (values: z.infer<typeof UserEditSchema>, userId:
                         lastName,
                         email,
                         phone,
+                        image,
                   },
             });
 

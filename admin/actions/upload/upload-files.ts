@@ -31,8 +31,14 @@ type FileUploadResponse = {
 async function uploadFileToS3(file: Buffer, fileName: string, contentType: string) {
       // Sharp specific settings for each file type
       let processedBuffer;
+
       if (contentType === "image/jpeg" || contentType === "image/jpg") {
-            processedBuffer = await sharp(file).jpeg({ quality: 50 }).resize(800, 800).toBuffer();
+            processedBuffer =
+                  await sharp(file)
+                        .jpeg({ quality: 50 })
+                        .resize(800, 800)
+                        .toBuffer();
+
       } else if (contentType === "image/png") {
             processedBuffer = await sharp(file).png({ compressionLevel: 5 }).resize(800, 800).toBuffer();
       } else {
@@ -85,3 +91,30 @@ export async function uploadFiles(formData: FormData): Promise<string[]> {
             return [];
       };
 };
+
+export async function uploadSingleFile(formData: FormData): Promise<string> {
+      const bucketUrl = `https://${bucketName}.s3.sa-east-1.amazonaws.com/`;
+
+      try {
+            const file = formData.get("file");
+            if (file instanceof File) {
+                  const buffer = Buffer.from(await file.arrayBuffer());
+                  const extensionFile = file.name.split(".").pop();
+                  const contentType = file.type;
+                  const newFileName = `${Date.now()}.${extensionFile}`;
+
+                  await uploadFileToS3(buffer, newFileName, contentType);
+
+                  const link = `${bucketUrl}${newFileName}`;
+
+                  revalidatePath("/");
+
+                  return link;
+            } else {
+                  throw new Error("No file found in form data.");
+            }
+      } catch (error) {
+            console.error("Error during file upload:", error);
+            throw error;
+      }
+}

@@ -3,16 +3,17 @@
 import { useRouter } from "next/navigation";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState, useTransition } from "react";
-import { BsPerson } from "react-icons/bs";
+import { ChangeEvent, useEffect, useState, useTransition } from "react";
+import { BsImageFill, BsPersonGear, } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import { UserEditSchema } from "@/schemas";
 import { Button, Callout, Divider, Flex, Grid, TextInput } from "@tremor/react"
-import { AnimBottomToTop, BeatLoading, TitleSection } from "@/components";
+import { AnimBottomToTop, BeatLoading, BounceLoading, TitleSection } from "@/components";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { useUserDataById } from "@/hooks/use-user-data";
 import { updateUser } from "@/actions/update/update-user";
+import { useUploadSingleFile } from "@/hooks/use-uploaded-files";
 import Image from "next/image";
 
 export const UserEditForm = ({ userId }: { userId: string }) => {
@@ -20,32 +21,64 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
 
       const router = useRouter();
 
+      const [currentImage, setCurrentImage] = useState<string>(user?.image ?? "/unknow-profile-image.png");
       const [error, setError] = useState<string>("");
       const [success, setSuccess] = useState<string>("");
       const [isLoadingPage, setIsLoadingPage] = useState<boolean>(false);
 
       const [isPending, startTransition] = useTransition();
 
+      const {
+            uploadedFile,
+            isUploading,
+            handleUploadSingleFile,
+            removeFile,
+      } = useUploadSingleFile();
+
       const form = useForm<z.infer<typeof UserEditSchema>>({
             resolver: zodResolver(UserEditSchema)
       });
 
+      const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files?.[0];
+
+            if (file) {
+                  const imageURL = URL.createObjectURL(file);
+                  setCurrentImage(imageURL);
+            }
+
+            await handleUploadSingleFile(event);
+      };
+
+      useEffect(() => {
+            if (uploadedFile) {
+                  setCurrentImage(uploadedFile);
+            }
+      }, [uploadedFile]);
+
       useEffect(() => {
             setIsLoadingPage(true);
+
+            if (user?.image) {
+                  setCurrentImage(user.image);
+            }
 
             if (user) {
                   form.reset({
                         firstName: user.firstName,
                         lastName: user.lastName,
                         email: user.email,
+                        image: currentImage,
                         phone: user.phone ?? "",
                   });
-            }
+            };
 
             setIsLoadingPage(false);
       }, [user]);
 
       const onSubmit = (values: z.infer<typeof UserEditSchema>) => {
+            values.image = currentImage;
+
             startTransition(() => {
                   startTransition(() => {
                         updateUser(values, userId)
@@ -56,6 +89,7 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
 
                                     if (data.success) {
                                           setSuccess(data.success)
+                                          console.log(values.image?.toString());
                                     };
                               })
                               .catch(() =>
@@ -82,8 +116,8 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
                   {!isLoadingPage ? (
                         <div className="w-full space-y-4">
                               <TitleSection
-                                    icon={BsPerson}
-                                    title="Edit User"
+                                    icon={BsPersonGear}
+                                    title="Profile Settings"
                               />
                               <form
                                     className={"w-full space-y-4"}
@@ -91,26 +125,50 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
                                     onChange={cleanMessages}
                               >
                                     {!success && (
-                                          <Flex className="w-full items-start justify-start flex-col sm:flex-row" style={{ gap: "20px" }}>
-                                                <div className="mr-4 space-y-1">
+                                          <Flex className="w-full items-start justify-start flex-col" style={{ gap: "20px" }}>
+                                                <div className="space-y-4">
                                                       <h3 className="text-tremor-label font-bold text-slate-800 ml-1">
                                                             Photo
                                                       </h3>
-                                                      {/* TODO: UPLOAD USER IMAGE */}
-                                                      {user?.image ? (
-                                                            <Image
-                                                                  alt={`Foto de ${user.firstName} ${user.lastName}`}
-                                                                  src={user.image}
-                                                                  width={100}
-                                                                  height={100}
+                                                      <label className="cursor-pointer rounded-tremor-full" >
+                                                            <AnimBottomToTop>
+
+                                                                  {isUploading ? (
+                                                                        <div className="p-4">
+                                                                              <BounceLoading />
+                                                                        </div>
+                                                                  ) : (
+                                                                        <div style={{ width: "120px", height: '120px', position: "relative" }}>
+                                                                              <img
+                                                                                    src={currentImage}
+                                                                                    alt={"Profile Photo"}
+                                                                                    className="cover rounded-tremor-full border border-slate-600"
+                                                                              />
+                                                                              <span className="hoverUploadProfilePhoto" >
+                                                                                    <Flex className="flex-col items-center justify-center space-y-1 font-medium text-center text-white p-4 mt-4">
+                                                                                          <BsImageFill size={24} />
+                                                                                          <span> Upload </span>
+                                                                                    </Flex>
+                                                                              </span>
+                                                                        </div>
+                                                                  )}
+
+                                                            </AnimBottomToTop>
+
+
+                                                            <input
+                                                                  className="hidden"
+                                                                  type="file"
+                                                                  id="file"
+                                                                  name="file"
+                                                                  accept="images/*"
+                                                                  multiple
+                                                                  onChange={handleFileChange}
                                                             />
-                                                      ) : (
-                                                            <div>
-                                                                  <div className="border-2 rounded-tremor-full cursor-pointer text-center flex flex-col items-center justify-center bg-slate-200 border-slate-300" style={{ width: "126px", height: "126px" }}>
-                                                                        <BsPerson size={24} />
-                                                                  </div>
-                                                            </div>
-                                                      )}
+                                                      </label>
+                                                      <h4 className="text-tremor-label">
+                                                            Click to upload profile photo
+                                                      </h4>
                                                 </div>
 
                                                 <Grid numItems={1} numItemsMd={2} style={{ gap: "20px", width: "100%" }}>
@@ -211,17 +269,19 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
                                           ) : !isLoadingPage ? (
                                                 <Flex className="justify-start space-x-2">
                                                       <Button
+
                                                             type={"submit"}
                                                             disabled={isPending}
                                                       >
-                                                            Edit User
+                                                            Save
                                                       </Button>
                                                       <Button
+
                                                             type={"button"}
                                                             variant="secondary"
                                                             onClick={handleBackPage}
                                                       >
-                                                            Cancel
+                                                            Back
                                                       </Button>
                                                 </Flex>
                                           ) : (
@@ -232,7 +292,8 @@ export const UserEditForm = ({ userId }: { userId: string }) => {
                         </div>
                   ) : (
                         <BeatLoading />
-                  )}
-            </AnimBottomToTop>
+                  )
+                  }
+            </AnimBottomToTop >
       );
 };

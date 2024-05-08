@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
-import { uploadFiles } from "@/actions/upload/upload-files";
+import { uploadFiles, uploadSingleFile } from "@/actions/upload/upload-files";
 
-const useUploadedFiles = () => {
+export const useUploadedFiles = () => {
       const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
       const [isUploadingFiles, setIsUploadingFiles] = useState<boolean>(false);
       const [errorUploadFiles, setErrorUploadFiles] = useState<string>("");
@@ -45,4 +45,45 @@ const useUploadedFiles = () => {
       return { uploadedFiles, isUploadingFiles, errorUploadFiles, handleUploadFiles, removeFile, setErrorUploadFiles, setUploadedFiles };
 };
 
-export default useUploadedFiles;
+export const useUploadSingleFile = () => {
+      const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+      const [isUploading, setIsUploading] = useState<boolean>(false);
+      const [error, setError] = useState<string>("");
+
+      const handleUploadSingleFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+            event.preventDefault();
+            setIsUploading(true);
+
+            if (!event.target.files || event.target.files.length !== 1) {
+                  setError("Please select one file to upload.");
+                  setIsUploading(false);
+                  return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", event.target.files[0]);
+
+            try {
+                  const uploadedLink = await uploadSingleFile(formData);
+                  setUploadedFile(uploadedLink);
+                  setError("");
+            } catch (uploadError) {
+                  console.error("Error uploading file:", uploadError);
+                  setError("Failed to upload file. Please try again.");
+            } finally {
+                  setIsUploading(false);
+            }
+      };
+
+      const removeFile = () => {
+            setUploadedFile(null);
+      };
+
+      return {
+            uploadedFile,
+            isUploading,
+            error,
+            handleUploadSingleFile,
+            removeFile,
+      };
+};

@@ -13,6 +13,7 @@ export const UserEditSchema = z.object({
       lastName: z.string().min(1, { message: "last name is required" }),
       email: z.string().email({ message: "email field is required" }),
       phone: z.string().optional(),
+      image: z.string().optional(),
 });
 
 export const LoginSchema = z.object({

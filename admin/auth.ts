@@ -75,6 +75,16 @@ export const {
                         session.user.role = token.role as UserRole; // Set user role in the session
                   }
 
+                  if (session.user) {
+                        session.user.name = token.name; // Add user name to session
+                  }
+
+                  // Ensure image is a string or null value
+                  if (typeof token.image === 'string' && session.user) {
+                        session.user.image = token.image; // Add the user image to the session
+                  }
+
+
                   return session; // Return the updated session
             },
 
@@ -86,7 +96,16 @@ export const {
                   const existingUser = await getUserById(token.sub); // Fetch the user from the database
 
                   if (existingUser) {
-                        token.role = existingUser.role; // Add the user's role to the token
+                        token.sub = existingUser.id; // Add sub to token
+                        token.role = existingUser.role; // Add role to token
+
+                        // Check if 'firstName' and 'lastName' are defined
+                        const fullName = existingUser.firstName && existingUser.lastName
+                              ? `${existingUser.firstName} ${existingUser.lastName}`
+                              : '';
+
+                        token.name = fullName; // Add username to token
+                        token.image = existingUser.image; // Sets the user image in the token
                   }
 
                   return token; // Return the updated token

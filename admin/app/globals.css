@@ -41,6 +41,10 @@
       @apply max-w-md flex-col justify-center space-y-4 px-4 mt-4 py-[50px];
 }
 
+.hoverUploadProfilePhoto {
+      @apply absolute top-0 right-0 w-full h-full rounded-tremor-full opacity-0 hover:opacity-80 bg-slate-600 transition-all duration-500;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
 

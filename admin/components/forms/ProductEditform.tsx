@@ -12,7 +12,7 @@ import { ProductSchema } from "@/schemas";
 import { useCategoryData } from "@/hooks/use-category-data";
 import { useProductDataById } from "@/hooks/use-product-data";
 import { updateProduct } from "@/actions/update/update-product";
-import useUploadedFiles from "@/hooks/use-uploaded-files";
+import { useUploadedFiles } from "@/hooks/use-uploaded-files";
 import Image from "next/image";
 
 interface PropsOfProperties {

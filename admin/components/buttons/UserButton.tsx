@@ -42,7 +42,7 @@ export const UserButton = () => {
                   >
                         <Menu.Items className="absolute right-0 mt-4 rounded-tremor-default bg-white shadow-lg ring-1 ring-black focus:outline-none" >
                               <Flex className="flex-col items-start space-y-4 divide-y divide-gray-400" style={{ width: "200px" }}>
-                                    <Link href={"/account"} className="w-full ">
+                                    <Link href={`/settings/${currentUser?.id}`} className="w-full ">
                                           <Menu.Item>
                                                 <Flex className="justify-start items-center space-x-4 p-4 hover:bg-blue-50">
                                                       <BsPersonGear size={20} />

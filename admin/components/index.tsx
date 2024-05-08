@@ -1,20 +1,24 @@
 import { HeaderLandigPage } from "@/components/navigation/HeaderLandigPage";
-import { HeaderSections } from "@/components/sections/HeaderSections";
-import { AsideMenu } from "@/components/navigation/AsideMenu";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { TechSections } from "@/components/sections/TechsSection";
-import { DashboardSection } from "@/components/sections/DashboardSection";
-import { WrapperForm } from "@/components/forms/WrapperForm"
-import { UserRegisterForm } from "@/components/forms/UserRegisterForm"
-import { UserLoginForm } from "@/components/forms/UserLoginForm"
 import { MainFooter } from "@/components/footers/MainFooter";
 import { Doubts } from "@/components/footers/Doubts";
+
+import { AsideMenu } from "@/components/navigation/AsideMenu";
+import { DashboardSection } from "@/components/sections/DashboardSection";
+import { HeaderSections } from "@/components/sections/HeaderSections";
+
 import { BeatLoading } from "@/components/loadings/BeatLoading";
 import { SyncLoading } from "@/components/loadings/SyncLoading";
 import { BounceLoading } from "@/components/loadings/BounceLoading";
 import { AnimBottomToTop } from "@/components/animations/AnimBottomToTop";
 
+import { WrapperForm } from "@/components/forms/WrapperForm"
+import { UserRegisterForm } from "@/components/forms/UserRegisterForm"
+import { UserLoginForm } from "@/components/forms/UserLoginForm"
+import { UserEditForm } from "@/components/forms/UserEditForm";
 import { UserButton } from "@/components/buttons/UserButton";
+
 import { LoginButton } from "@/components/buttons/LoginButton";
 import { LogoutButton } from "@/components/buttons/LogoutButton";
 
@@ -63,4 +67,5 @@ export {
       OrderSection,
       OrderTable,
       UserButton,
+      UserEditForm,
 };

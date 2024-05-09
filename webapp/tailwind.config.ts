@@ -14,6 +14,7 @@ const config: Config = {
     extend: {
       colors: {
         // light mode
+        white: colors.white,
         tremor: {
           brand: {
             faint: colors.blue[50],

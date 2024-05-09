@@ -1,10 +1,20 @@
 "use client";
 
-import { Button, Callout, Card, Divider, Flex, Subtitle, Text, Title } from "@tremor/react";
-import { useProductData } from "@/hooks/use-product-data";
+import { useContext } from "react";
 import { BsEyeFill } from "react-icons/bs";
+import { Button, Callout, Card, Divider, Flex, Subtitle, Title } from "@tremor/react";
+import { useProductData } from "@/hooks/use-product-data";
+import { CartContext } from "@/context/CartContext";
 
 export const NewsProducts = () => {
+      const cartContext = useContext(CartContext);
+
+      if (!cartContext) {
+            throw new Error("CartContext not found");
+      };
+
+      const { addProduct } = cartContext;
+
       const { products } = useProductData();
 
       return (
@@ -38,7 +48,7 @@ export const NewsProducts = () => {
                                                             <Subtitle className="font-bold">
                                                                   {product.price}
                                                             </Subtitle>
-                                                            <Button size={"xs"} onClick={() => { }}>
+                                                            <Button size={"xs"} onClick={() => addProduct(product.id)}>
                                                                   add to cart
                                                             </Button>
                                                       </Flex>

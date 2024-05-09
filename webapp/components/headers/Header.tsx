@@ -5,8 +5,18 @@ import Link from "next/link";
 import { BsCart, BsPerson, BsSearch, } from "react-icons/bs";
 import { Flex, Subtitle } from "@tremor/react";
 import { ToggleMenu } from "@/components";
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
 
 export const Header = () => {
+      const cartContext = useContext(CartContext);
+
+      if (!cartContext) {
+            throw new Error("CartContext not found");
+      };
+
+      const { cartProducts } = cartContext;
+
       return (
             <Flex className="p-4 bg-slate-50 text-sm shadow-tremor-card fixed z-50">
                   <ToggleMenu />
@@ -36,7 +46,7 @@ export const Header = () => {
                                           <div className="flex items-center space-x-2">
                                                 <BsCart size={16} />
                                                 <span className="desktop-only"> Carrinho </span>
-                                                (0)
+                                                ({cartProducts.length})
                                           </div>
                                     </Link>
                               </li>

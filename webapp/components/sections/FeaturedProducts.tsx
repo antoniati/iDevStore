@@ -1,14 +1,20 @@
 "use client";
 
 import { useContext, useState } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 import { Button, Flex } from "@tremor/react";
 import { useProductData } from "@/hooks/use-product-data";
+import { CartContext } from "@/context/CartContext";
 
-export const FeaturedProducts = () => {
+export const FeaturedProducts = () => {      
+      const cartContext = useContext(CartContext);
+
+      if (!cartContext) {
+            throw new Error("CartContext not found");
+      };
+
+      const { addProduct } = cartContext;
+
 
       const { products } = useProductData();
 
@@ -37,7 +43,7 @@ export const FeaturedProducts = () => {
                                           <h1 className="featured-title">{products[1].name}</h1>
                                           <p className="featured-description">{products[1].description}</p>
                                           <Flex className="justify-start space-x-2">
-                                                <Button onClick={() => { }}>
+                                          <Button onClick={() => addProduct(products[1].id)}>
                                                       Add to Cart
                                                 </Button>
                                                 <Button onClick={() => { }} variant="secondary">

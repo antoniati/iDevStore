@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BsCart, BsPerson, BsSearch, } from "react-icons/bs";
 import { Flex, Subtitle } from "@tremor/react";
-import { ToggleMenu } from "../buttons/ToggleMenu";
+import { ToggleMenu } from "@/components";
 
 export const Header = () => {
       return (

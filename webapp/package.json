@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.0.3",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@prisma/client": "^5.13.0",
     "@tremor/react": "^3.16.2",
     "next": "14.2.3",
     "react": "^18",

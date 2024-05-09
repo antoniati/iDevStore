@@ -1,11 +1,10 @@
-import { Card } from "@tremor/react";
+import { FeaturedProducts, NewsProducts } from "@/components";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4">
-      <Card className="text-center">
-        Hello World
-      </Card>
-    </main>
+    <>
+      <FeaturedProducts />
+      <NewsProducts />
+    </>
   );
 }

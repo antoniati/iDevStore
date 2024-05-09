@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { Fragment, useState } from "react";
-import { BsCart, BsBoxSeam, BsClipboardData, BsList, BsSearch, BsShop, BsBag, BsInfoCircle, BsQuestionCircle, BsChatDots, BsPencilSquare, BsGift, BsLayers, BsHeart, BsPerson, } from "react-icons/bs";
+import { Fragment, useState } from "react";
+import { BsCart, BsClipboardData, BsList, BsSearch, BsShop, BsBag, BsQuestionCircle, BsLayers, } from "react-icons/bs";
 import { Button } from "@tremor/react";
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 

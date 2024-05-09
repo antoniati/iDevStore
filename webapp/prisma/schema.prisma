@@ -1,0 +1,139 @@
+// This is the Prisma schema for your project. It defines the data models, 
+// relationships, and data source used in your application.
+// Learn more about Prisma schema files in the documentation: https://pris.ly/d/prisma-schema
+
+// Additionally, consider Prisma Accelerate for improving performance in serverless or edge functions.
+// Learn more at: https://pris.ly/cli/accelerate-init
+
+// Define the Prisma Client generator, which generates the Prisma Client to interact with the database.
+generator client {
+  provider = "prisma-client-js" // Prisma Client for Node.js/JavaScript environments
+}
+
+// Define the data source, indicating which database to connect to and how to connect.
+// Here we use PostgreSQL as our data source, with the connection URL fetched from environment variables.
+datasource db {
+  provider = "postgresql" // Using PostgreSQL as the database
+  url      = env("DATABASE_URL") // Connection string sourced from environment variables
+}
+
+// Enumeration for defining user roles. This can be extended to add more roles as needed.
+enum UserRole {
+  ADMIN // Administrator role with full privileges
+  USER // Regular user role with limited privileges
+}
+
+// Definition of the User model, which represents users in the application.
+// This model includes basic user information, unique identifiers for email and phone,
+// and optional security features like two-factor authentication.
+model User {
+  id            String    @id @default(cuid()) // Unique identifier for each user
+  image         String? // Optional profile image
+  firstName     String // first name
+  lastName      String // last name
+  email         String    @unique // Email address (unique)
+  phone         String?   @unique // optional Phone number (unique)
+  emailVerified DateTime? // Timestamp for email verification
+  password      String // User's password (hashed)
+  role          UserRole  @default(ADMIN) // Default role for the user
+
+  // Security features for two-factor authentication
+  isTwoFactorEnabled    Boolean                @default(false) // Indicates if 2FA is enabled
+  twoFactorConfirmation TwoFactorConfirmation? // Relationship with the TwoFactorConfirmation model
+  Category              Category[]
+  Product               Product[]
+  Order                 Order[]
+}
+
+// Model representing tokens for email verification. 
+// These tokens are used to confirm email addresses during account creation or verification.
+model VerificationToken {
+  id      String   @id @default(cuid()) // Unique identifier for each verification token
+  email   String // Email address associated with the token
+  token   String   @unique // Token used for verification (unique)
+  expires DateTime // Expiration date for the token
+
+  @@unique([email, token]) // Composite unique index to ensure uniqueness of email and token
+}
+
+// Model representing tokens for password reset. 
+// Used when users request a password reset, ensuring a secure reset process.
+model PasswordResetToken {
+  id      String   @id @default(cuid()) // Unique identifier for each reset token
+  email   String // Email address associated with the token
+  token   String   @unique // Token used for password reset (unique)
+  expires DateTime // Expiration date for the token
+
+  @@unique([email, token]) // Composite unique index for ensuring token uniqueness
+}
+
+// Model for tokens related to two-factor authentication. 
+// These tokens are used for confirming 2FA during login.
+model TwoFactorToken {
+  id      String   @id @default(cuid()) // Unique identifier for each 2FA token
+  email   String // Email address associated with the token
+  token   String   @unique // 2FA token (unique)
+  expires DateTime // Expiration date for the token
+
+  @@unique([email, token]) // Composite unique index to ensure token uniqueness
+}
+
+// Model representing the confirmation of two-factor authentication.
+// It establishes a relation to the User model, indicating which user has 2FA enabled.
+model TwoFactorConfirmation {
+  id String @id @default(cuid()) // Unique identifier for the confirmation
+
+  userId String // Foreign key referencing the User model
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation with the User model
+
+  @@unique([userId]) // Unique constraint to ensure one confirmation per user
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  parent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  Product Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  price       String
+  name        String
+  images      String[]
+  description String
+
+  properties Json?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  Category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  categoryName String?
+}
+
+model Order {
+  id         String  @id @default(uuid())
+  line_items Json
+  name       String
+  email      String
+  city       String
+  cep        String
+  street     String
+  phone      String
+  paid       Boolean
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

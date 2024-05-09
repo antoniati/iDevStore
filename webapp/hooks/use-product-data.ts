@@ -20,10 +20,8 @@ export const useProductData = () => {
       };
 
       useEffect(() => {
-            if (products.length === 0) {
                   fetchAllProducts();
-            }
-      }, [products]);
+      }, []);
 
 
       return { products, fetchAllProducts };

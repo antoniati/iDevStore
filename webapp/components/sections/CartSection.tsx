@@ -6,6 +6,7 @@ import { CartContext } from "@/context/CartContext";
 import { CartTable } from "@/components";
 import { useProductData } from "@/hooks/use-product-data";
 import { BsCart } from "react-icons/bs";
+import { OrderForm } from "../form/OrderForm";
 
 export const CartSection = () => {
       const cartContext = useContext(CartContext);
@@ -27,9 +28,10 @@ export const CartSection = () => {
                               addProduct={addProduct}
                               removeProduct={removeProduct}
                         />
-                        <Card>
-                              TODO : Order form
-                        </Card>
+                        <OrderForm
+                              cartProducts={cartProducts}
+                              clearCart={clearCart}
+                        />
                   </Flex>
             ) : (
                   <div className="main-container" style={{ paddingTop: "40px" }}>

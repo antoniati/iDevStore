@@ -23,13 +23,17 @@ export const OrderTable = ({ orders }: OrderTableProps) => {
                                                 {new Date(order.createdAt).toLocaleString()}
                                           </TableCell>
                                           <TableCell>
-                                                {order.name} {order.email}
+                                                <b>person: </b>{order.firstName} {order.lastName}
                                                 <br />
-                                                {order.street} {order.cep}
+                                                <b>email: </b>{order.email}
                                                 <br />
-                                                {order.city}
+                                                <b>phone: </b>{order.phone}
                                                 <br />
-                                                {order.phone}
+                                                <b>cidade: </b>{order.city}, <b>state: {order.state} </b>
+                                                <br />
+                                                <b>street: </b>{order.street}
+                                                <br />
+                                                <b>zip: </b> {order.zip}
                                           </TableCell>
                                           <TableCell>
                                                 {Array.isArray(order.line_items) ? (

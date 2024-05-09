@@ -12,7 +12,7 @@ export const HeroSection = () => {
       return (
             <section className="hero-section">
                   <Metric>
-                        Everything you need to manage your store
+                        Everything you need to manage your store Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi reiciendis libero corporis doloribus neque repellendus ex quam fuga illo consequuntur non quia voluptatem, nobis omnis praesentium dolorum modi earum molestiae.
                   </Metric>
                   <Title>
                         With an intuitive interface and advanced features, iDevStore lets you control every aspect of your store, from product management to sales tracking

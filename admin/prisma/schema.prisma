@@ -123,10 +123,12 @@ model Product {
 model Order {
   id         String  @id @default(uuid())
   line_items Json
-  name       String
+  firstName  String
+  lastName   String
   email      String
   city       String
-  cep        String
+  state      String
+  zip        String
   street     String
   phone      String
   paid       Boolean

@@ -1,6 +1,6 @@
 # iDevStore - A Modern Fullstack E-Commerce Shop for devs
 
-![Project Image](https://github.com/antoniati/iDevStore/webapp/public/thumbnail.png)
+![Project Image](https://github.com/antoniati/iDevStore/blob/main/admin/public/thumbnail.png)
 
 ## Features
 

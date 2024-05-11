@@ -7,6 +7,9 @@ import { Flex, Subtitle } from "@tremor/react";
 import { ToggleMenu } from "@/components";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
+import { LoginButton } from "../buttons/LoginButton";
+import { useCurrentUserByClientSide } from "@/hooks/use-client-side-user";
+import { UserButton } from "../buttons/UserButton";
 
 export const Header = () => {
       const cartContext = useContext(CartContext);
@@ -16,6 +19,8 @@ export const Header = () => {
       };
 
       const { cartProducts } = cartContext;
+
+      const currentUser = useCurrentUserByClientSide();
 
       return (
             <Flex className="p-4 bg-slate-50 text-sm shadow-tremor-card fixed z-50">
@@ -32,7 +37,7 @@ export const Header = () => {
                         </Subtitle>
                   </Link>
                   <nav className="w-full flex justify-end">
-                        <ul className="flex space-x-4">
+                        <ul className="flex items-center space-x-4">
                               <li>
                                     <Link href={"/search"} className="desktop-only">
                                           <div className="flex items-center space-x-2">
@@ -50,12 +55,21 @@ export const Header = () => {
                                           </div>
                                     </Link>
                               </li>
-                              <li>
-                                    <div className="flex items-center space-x-2">
-                                          <BsPerson size={20} />
-                                          <span className="desktop-only"> Conta </span>
-                                    </div>
-                              </li>
+                              {currentUser ? (
+                                    <li>
+                                          <UserButton />
+                                    </li>
+                              ) : (
+
+                                    <LoginButton pageUrl="/settings">
+                                          <li>
+                                                <div className="flex items-center space-x-2">
+                                                      <BsPerson size={20} />
+                                                      <span className="desktop-only"> Conta </span>
+                                                </div>
+                                          </li>
+                                    </LoginButton>
+                              )}
                         </ul>
                   </nav >
             </Flex >

@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { OrderSchema } from "@/schemas";
 import { Button, Callout, Card, Divider, Flex, TextInput, Title } from "@tremor/react";
@@ -11,6 +11,7 @@ import 'react-phone-input-2/lib/style.css';
 import { BeatLoading } from "@/components";
 import { registerOrder } from "@/actions/create/register-order";
 import { BsClipboardData } from "react-icons/bs";
+import { useCurrentUserByClientSide } from "@/hooks/use-client-side-user";
 
 interface OrderFormProps {
       cartProducts: string[];
@@ -23,6 +24,17 @@ export const OrderForm = ({ cartProducts, clearCart }: OrderFormProps) => {
       const [isPending, setIsPending] = useState<boolean>(false);
 
       const [transitioning, startTransition] = useTransition();
+
+      const currentUser = useCurrentUserByClientSide();
+
+      useEffect(() => {
+            if (currentUser) {
+                  form.setValue("firstName", currentUser.firstName);
+                  form.setValue("lastName", currentUser.lastName);
+                  form.setValue("email", currentUser.email ?? "");
+                  form.setValue("phone", currentUser.phone ?? "");
+            }
+      }, [currentUser]);
 
       const form = useForm<z.infer<typeof OrderSchema>>({
             resolver: zodResolver(OrderSchema),
@@ -82,6 +94,7 @@ export const OrderForm = ({ cartProducts, clearCart }: OrderFormProps) => {
                                     type={"text"}
                                     name={"firstName"}
                                     placeholder={"Ex: John"}
+                                    value={form.watch("firstName")}
                                     onChange={(e) => form.setValue("firstName", e.target.value)}
                                     error={form.formState.errors.firstName ? true : false}
                                     errorMessage={form.formState.errors.firstName?.message}
@@ -96,6 +109,7 @@ export const OrderForm = ({ cartProducts, clearCart }: OrderFormProps) => {
                                     type={"text"}
                                     name={"lastName"}
                                     placeholder={"Ex: Doe"}
+                                    value={form.watch("lastName")}
                                     onChange={(e) => form.setValue("lastName", e.target.value)}
                                     error={form.formState.errors.lastName ? true : false}
                                     errorMessage={form.formState.errors.lastName?.message}
@@ -110,6 +124,7 @@ export const OrderForm = ({ cartProducts, clearCart }: OrderFormProps) => {
                                     type={"email"}
                                     name={"email"}
                                     placeholder={"your_email@example.com"}
+                                    value={form.watch("email")}
                                     onChange={(e) => form.setValue("email", e.target.value)}
                                     error={form.formState.errors.email ? true : false}
                                     errorMessage={form.formState.errors.email?.message}

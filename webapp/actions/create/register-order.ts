@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { db } from "@/libs/db";
 import { OrderSchema } from "@/schemas";
+import { currentUser } from "@/hooks/use-server-side-user";
 const stripe = require("stripe")(process.env.STRIPE_SK);
 
 export const registerOrder = async (values: z.infer<typeof OrderSchema>) => {
@@ -42,30 +43,58 @@ export const registerOrder = async (values: z.infer<typeof OrderSchema>) => {
                   });
             };
       };
+      const user = await currentUser();
 
-      const newOrder = await db.order.create({
-            data: {
-                  firstName,
-                  lastName,
-                  zip,
-                  state,
+      if (user) {
+            const newOrder = await db.order.create({
+                  data: {
+                        firstName,
+                        lastName,
+                        zip,
+                        state,
+                        line_items,
+                        email,
+                        city,
+                        street,
+                        phone,
+                        paid: false,
+                        userId: user.id,
+                  },
+            });
+            const session = await stripe.checkout.sessions.create({
                   line_items,
-                  email,
-                  city,
-                  street,
-                  phone,
-                  paid: false,
-            },
-      });
+                  mode: "payment",
+                  customer_email: email,
+                  success_url: process.env.NEXT_PUBLIC_APP_URL + "/success",
+                  cancel_url: process.env.NEXT_PUBLIC_APP_URL + "/cart?canceled=1",
+                  metadata: { orderId: newOrder.id.toString() },
+            });
 
-      const session = await stripe.checkout.sessions.create({
-            line_items,
-            mode: "payment",
-            customer_email: email,
-            success_url: process.env.NEXT_PUBLIC_APP_URL + "/success",
-            cancel_url: process.env.NEXT_PUBLIC_APP_URL + "/cart?canceled=1",
-            metadata: { orderId: newOrder.id.toString() },
-      });
+            return { url: session.url }
+      } else {
+            const newOrder = await db.order.create({
+                  data: {
+                        firstName,
+                        lastName,
+                        zip,
+                        state,
+                        line_items,
+                        email,
+                        city,
+                        street,
+                        phone,
+                        paid: false,
+                  },
+            });
+            const session = await stripe.checkout.sessions.create({
+                  line_items,
+                  mode: "payment",
+                  customer_email: email,
+                  success_url: process.env.NEXT_PUBLIC_APP_URL + "/success",
+                  cancel_url: process.env.NEXT_PUBLIC_APP_URL + "/cart?canceled=1",
+                  metadata: { orderId: newOrder.id.toString() },
+            });
 
-      return { url: session.url }
+            return { url: session.url }
+      }
 };

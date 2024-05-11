@@ -102,6 +102,11 @@
       @apply space-x-4;
 }
 
+/* Wrapper Form */
+.wrapper-form {
+      @apply max-w-md flex-col justify-center space-y-4 px-4 mt-4 py-[80px];
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
       .main-container {

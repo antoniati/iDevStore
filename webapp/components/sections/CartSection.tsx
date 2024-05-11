@@ -3,7 +3,7 @@
 import { useContext } from "react";
 import { Callout, Card, Divider, Flex, Title } from "@tremor/react";
 import { CartContext } from "@/context/CartContext";
-import { CartTable } from "@/components";
+import { BeatLoading, CartTable } from "@/components";
 import { useProductData } from "@/hooks/use-product-data";
 import { BsCart } from "react-icons/bs";
 import { OrderForm } from "../form/OrderForm";
@@ -18,6 +18,14 @@ export const CartSection = () => {
       const { cartProducts, addProduct, removeProduct, clearCart } = cartContext;
 
       const { products } = useProductData();
+
+      if (!products) {
+            return (
+                  <div style={{ paddingBlock: "100px" }}>
+                        <BeatLoading />
+                  </div>
+            )
+      }
 
       return (
             cartProducts && cartProducts?.length > 0 ? (

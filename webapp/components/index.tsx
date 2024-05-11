@@ -7,6 +7,9 @@ import { CartTable } from "./table/CartTable";
 import { CartSection } from "./sections/CartSection";
 import { BeatLoading } from "./loadings/BeatLoading";
 import { OrderForm } from "./form/OrderForm";
+import { AllProductsSection } from "./sections/AllProductsSection";
+import { ProductDetailImageSlider } from "./sliders/ProductDetailImageSlider";
+import { ProductDetailsSection } from "./sections/ProductDetailsSection";
 
 export {
       Header,
@@ -17,5 +20,8 @@ export {
       CartTable,
       CartSection,
       BeatLoading,
-      OrderForm
+      OrderForm,
+      AllProductsSection,
+      ProductDetailImageSlider,
+      ProductDetailsSection,
 }

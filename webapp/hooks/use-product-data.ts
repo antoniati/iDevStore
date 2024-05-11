@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAllProducts, getProductById } from "@/actions/read/get-products";
 import { Product } from "@prisma/client";
 
@@ -20,7 +20,7 @@ export const useProductData = () => {
       };
 
       useEffect(() => {
-                  fetchAllProducts();
+            fetchAllProducts();
       }, []);
 
 
@@ -47,4 +47,24 @@ export const useProductDataById = (productId: string) => {
       }, []);
 
       return { product };
+};
+
+export const useProductSearch = (productData: Product[]) => {
+      const [filteredCProductData, setFilteredCProductData] = useState(productData);
+
+      const handleSearchProductsData = useCallback((term: string) => {
+            const searchTerm = term.toLowerCase();
+            const productsFound = productData.filter(product => {
+                  const productNumberLowerCase = (product.name ?? "").toLowerCase();
+
+                  const matchesTerm =
+                        productNumberLowerCase.includes(searchTerm)
+
+                  return matchesTerm;
+            });
+
+            setFilteredCProductData(productsFound);
+      }, [productData]);
+
+      return { filteredCProductData, handleSearchProductsData };
 };

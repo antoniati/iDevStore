@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
-import { BsCart, BsClipboardData, BsList, BsSearch, BsShop, BsBag, BsQuestionCircle, BsLayers, } from "react-icons/bs";
+import { BsCart, BsList, BsSearch, BsShop, BsBag, BsQuestionCircle, BsLayers, } from "react-icons/bs";
 import { Button } from "@tremor/react";
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 
@@ -28,19 +28,14 @@ export const ToggleMenu = () => {
                   url: "/cart",
             },
             {
-                  icon: BsSearch,
-                  title: "Search",
-                  url: "/search",
-            },
-            {
                   icon: BsBag,
                   title: "Products",
                   url: "/products/all-products",
             },
             {
-                  icon: BsClipboardData,
-                  title: "Orders",
-                  url: "/orders",
+                  icon: BsSearch,
+                  title: "Search",
+                  url: "/search",
             },
             {
                   icon: BsLayers,

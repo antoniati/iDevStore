@@ -1,5 +1,7 @@
 # iDevStore - A Modern Fullstack E-Commerce Shop for devs
 
+Built with the Next JS 14, TypeScript, Tailwind CSS, Tremor, Next Auth, Zod, React Hook Form, Prisma, Resend, AWS, Stripe
+
 ![Project Image](https://github.com/antoniati/iDevStore/blob/main/admin/public/thumbnail.png)
 
 ## Features
